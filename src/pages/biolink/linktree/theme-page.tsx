@@ -13,6 +13,9 @@ import { Slider } from "@/components/ui/slider"
 import { HexColorPicker } from "react-colorful"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Link } from "react-router-dom"
+import ButtonEditor from "@/pages/biolink/linktree/choosebutton/button"
+import FontEditor from "@/pages/biolink/linktree/choosebutton/fonteditor"
+
 
 export default function ThemePage() {
   const { themeSettings, setThemeSettings, saveSettings, appearancePreferences, setAppearancePreference } =
@@ -28,6 +31,7 @@ export default function ThemePage() {
   const [backgroundOpacity, setBackgroundOpacity] = useState(() => themeSettings.backgroundOpacity || 100)
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [showTextColorPicker, setShowTextColorPicker] = useState(false)
+  const [selectButton, setSelectedButton] = useState("");
 
   // Available themes with more aesthetic options
   const themes = [
@@ -178,6 +182,9 @@ export default function ThemePage() {
     },
   ]
 
+
+
+
   // Font options
   const fonts = [
     { id: "default", name: "Default", family: "Inter, sans-serif" },
@@ -187,12 +194,9 @@ export default function ThemePage() {
     { id: "display", name: "Display", family: "'Playfair Display', serif" },
   ]
 
-  // Button style options
-  const buttonStyles = [
-    { id: "rounded", name: "Rounded", preview: "rounded-full" },
-    { id: "soft", name: "Soft", preview: "rounded-lg" },
-    { id: "square", name: "Square", preview: "rounded-none" },
-  ]
+
+
+
 
   // Background types
   const backgroundTypes = [
@@ -459,52 +463,110 @@ export default function ThemePage() {
                 </div>
               </TabsContent>
 
+
+
+
+
+
               {/* Buttons Tab */}
               <TabsContent value="buttons" className="space-y-6">
-                <div className="rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-700 p-6">
-                  <h2 className="mb-4 text-lg font-semibold dark:text-white">Button Style</h2>
-                  <div className="grid grid-cols-3 gap-4">
-                    {buttonStyles.map((style) => (
-                      <div
-                        key={style.id}
-                        className={`relative cursor-pointer rounded-lg border-2 p-4 transition-all ${
-                          buttonStyle === style.id ? "border-purple-600" : "border-gray-200 dark:border-gray-700"
-                        }`}
-                        onClick={() => setButtonStyle(style.id)}
-                      >
-                        {buttonStyle === style.id && (
-                          <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-purple-600 text-white">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                          </div>
-                        )}
-                        <div className="flex flex-col items-center">
-                          <div
-                            className={`mb-2 h-10 w-full ${style.preview} bg-purple-600 flex items-center justify-center text-white text-xs`}
-                          >
-                            Button
-                          </div>
-                        </div>
-                        <p className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">{style.name}</p>
-                      </div>
-                    ))}
-                  </div>
 
-                  <div className="mt-6 flex items-center justify-between">
-                    <Label htmlFor="button-shadow">Button Shadow</Label>
-                    <Switch id="button-shadow" checked={buttonShadow} onCheckedChange={setButtonShadow} />
-                  </div>
+                <div className="rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-700 p-6">
+                  <h2 className="mb-4 text-2xl font-semibold dark:text-white">Button</h2>
+                  <h4 className="mr-2 text-md">Fill</h4>
+                    <ButtonEditor type="fill" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
+                    <h4 className="mr-2 mt-2 text-md">outline</h4>
+                    <ButtonEditor type="outline" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
+                    <h4 className="mr-2 mt-2 text-md">shadow</h4>
+                    <ButtonEditor type="shadow" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
+
+
+                    {/*button colour */}
+                    <h2 className="mr-2 mt-10 text-lg">Button Colour</h2>
+                    <div className="flex flex-row mt-2">
+                      <div>
+                        <input
+                          type="color"
+                          className="mr-3 h-12 w-12 rounded-sm appearance-none cursor-pointer bg-transparent p-0
+                            [&::-moz-color-swatch]:h-full [&::-moz-color-swatch]:w-full [&::-moz-color-swatch]:border-none
+                            [&::-webkit-color-swatch-wrapper]:p-0 
+                            [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
+                          data-testid="ColorSelector"
+                          aria-label="Select color"
+                          value="#a04649"
+                          />
+                      </div>
+                      <div className="w-45 rounded-lg border-2 border-black" >
+                        <label className="ml-3 text-sm text-gray-400">Button Colour</label>
+                        <div className="w-[100px] overflow-hidden ml-3">
+                          <input
+                            className="w-full border-b border-black outline-none bg-transparent focus:border-black"
+                            defaultValue="#a04649"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+
+                    {/*button font colour */}                    
+                    <h2 className="mr-2 mt-10 text-lg">Button Font Colour</h2>
+                    <div className="flex flex-row mt-2">
+                      <div>
+                        <input
+                          type="color"
+                          className="mr-3 h-12 w-12 rounded-sm appearance-none cursor-pointer bg-transparent p-0
+                            [&::-moz-color-swatch]:h-full [&::-moz-color-swatch]:w-full [&::-moz-color-swatch]:border-none
+                            [&::-webkit-color-swatch-wrapper]:p-0 
+                            [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
+                          data-testid="ColorSelector"
+                          aria-label="Select color"
+                          value="#2ec2d6"
+                          />
+                      </div>
+                      <div className="w-45 rounded-lg border-2 border-black" >
+                        <label className="ml-3 text-sm text-gray-400">Button Font Colour</label>
+                        <div className="w-[100px] overflow-hidden ml-3">
+                          <input
+                            className="w-full border-b border-black outline-none bg-transparent focus:border-black"
+                            defaultValue="#2ec2d6"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                    
+
+                {/*font styling*/}
+                <div className="rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-700 p-6">
+                  <h2 className="mb-2 text-2xl font-semibold dark:text-white">Fonts</h2>
+                    {/*font family*/}
+                    <FontEditor/>
+                    {/*font colour */}                    
+                    <h2 className="mr-2 mt-10 text-lg">Font Colour</h2>
+                    <div className="flex flex-row mt-2">
+                      <div>
+                        <input
+                          type="color"
+                          className="mr-3 h-12 w-12 rounded-sm appearance-none cursor-pointer bg-transparent p-0
+                            [&::-moz-color-swatch]:h-full [&::-moz-color-swatch]:w-full [&::-moz-color-swatch]:border-none
+                            [&::-webkit-color-swatch-wrapper]:p-0 
+                            [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
+                          data-testid="ColorSelector"
+                          aria-label="Select color"
+                          value="#1a5276"
+                          />
+                      </div>
+                      <div className="w-45 rounded-lg border-2 border-black" >
+                        <label className="ml-3 text-sm text-gray-400">Font Colour</label>
+                        <div className="w-[100px] overflow-hidden ml-3">
+                          <input
+                            className="w-full border-b border-black outline-none bg-transparent focus:border-black"
+                            defaultValue="#1a5276"
+                          />
+                        </div>
+                      </div>
+                    </div>
                 </div>
               </TabsContent>
             </Tabs>
@@ -515,6 +577,11 @@ export default function ThemePage() {
               </Button>
             </div>
           </div>
+
+
+
+
+
 
           {/* Mobile Preview */}
           <div className="hidden md:block">
@@ -528,4 +595,3 @@ export default function ThemePage() {
     </div>
   )
 }
-
