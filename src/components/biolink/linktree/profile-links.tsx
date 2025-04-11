@@ -21,6 +21,7 @@ import {
   EyeOff,
   Clock,
   CalendarRange,
+  Pencil,
 } from "lucide-react"
 import {
   DropdownMenu,
@@ -40,6 +41,7 @@ import { ScheduleDialog } from "@/components/biolink/linktree/schedule-dialog"
 
 export function ProfileLinks() {
   const [isAddLinkOpen, setIsAddLinkOpen] = useState(false)
+  const [isEditLinkOpen, setIsEditLinkOpen] = useState(false)
   const [isThumbnailDialogOpen, setIsThumbnailDialogOpen] = useState(false)
   const [activeLinkForThumbnail, setActiveLinkForThumbnail] = useState<number | null>(null)
   const [clickAnalyticsOpen, setClickAnalyticsOpen] = useState(false)
@@ -61,6 +63,7 @@ export function ProfileLinks() {
     updateLinkThumbnail,
     updateLinkSchedule,
     addRegularLink,
+    updateRegularLink,
   } = useLinks()
 
   const handleLinkClick = (id: number) => {
@@ -80,6 +83,12 @@ export function ProfileLinks() {
     addRegularLink(newLink)
   }
 
+  const handleUpdateLink = (data: { title: string; url: string }, id?: number) => {
+    if (id !== undefined) {
+      updateRegularLink(id, data)
+    }
+  }
+  
   const handleShareLink = (url: string) => {
     // Skip Web Share API entirely and go straight to clipboard
     copyToClipboard(url)
@@ -395,7 +404,7 @@ export function ProfileLinks() {
                         />
                       </div>
                     ) : (
-                      <MoreVertical className="h-5 w-5 text-gray-400 dark:text-gray-500 transition-colors duration-300" />
+                      <MoreVertical className="h-5 w-5 text-gray-400 dark:text-gray-500 transition-colors duration-300 hidden" />
                     )}
                   </div>
                   <div>
@@ -486,6 +495,9 @@ export function ProfileLinks() {
                       </Tooltip>
                     </TooltipProvider>
 
+
+
+
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -506,6 +518,10 @@ export function ProfileLinks() {
                       </Tooltip>
                     </TooltipProvider>
 
+
+
+
+
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -525,6 +541,10 @@ export function ProfileLinks() {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
+
+
+
+
 
                     <TooltipProvider>
                       <Tooltip>
@@ -620,7 +640,10 @@ export function ProfileLinks() {
                     </DropdownMenu>
                   </div>
 
-                  {/* Edit and Delete buttons (desktop only) */}
+
+
+
+                  {/* Delete buttons (desktop only) */}
                   <div className="hidden md:flex items-center space-x-2">
                     <Button
                       variant="ghost"
@@ -632,6 +655,24 @@ export function ProfileLinks() {
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   </div>
+
+
+                  {/* Edit button (desktop only) */}
+                  <div className="hidden md:flex items-center space-x-2">
+                   <Button
+                     variant="ghost"
+                     size="icon"
+                    //  onClick={() =>updateRegularLink(link.id,)} // 👈 update this with your actual edit logic
+                     className="h-7 w-7 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300"
+                     aria-label="Edit link"
+                     onClick={() => setIsEditLinkOpen(true)}
+                   >
+                     <Pencil className="h-3.5 w-3.5" />
+                   </Button>
+                   <LinkDialog isOpen={isEditLinkOpen} onOpenChange={setIsEditLinkOpen} onSave={handleUpdateLink} initialData ={link}/>
+                  </div>
+
+
 
                   {/* Toggle switch */}
                   <Switch

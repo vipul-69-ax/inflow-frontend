@@ -472,22 +472,22 @@ export default function ThemePage() {
               <TabsContent value="buttons" className="space-y-6">
 
                 <div className="rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-700 p-6">
-                  <h2 className="mb-4 text-2xl font-semibold dark:text-white">Button</h2>
-                  <h4 className="mr-2 text-md">Fill</h4>
+                  <h2 className="mb-6 text-2xl font-semibold dark:text-white" style={{fontFamily:"Avenir LT Std"}}>Button</h2>
+                  <h4 className="mr-2 mb-2 text-md " style={{fontFamily:"Avenir LT Std"}}>Fill</h4>
                     <ButtonEditor type="fill" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
-                    <h4 className="mr-2 mt-2 text-md">outline</h4>
+                    <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Outline</h4>
                     <ButtonEditor type="outline" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
-                    <h4 className="mr-2 mt-2 text-md">shadow</h4>
+                    <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Shadow</h4>
                     <ButtonEditor type="shadow" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
 
 
                     {/*button colour */}
-                    <h2 className="mr-2 mt-10 text-lg">Button Colour</h2>
+                    <h2 className="mr-2 mt-6 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Button Colour</h2>
                     <div className="flex flex-row mt-2">
                       <div>
                         <input
                           type="color"
-                          className="mr-3 h-12 w-12 rounded-sm appearance-none cursor-pointer bg-transparent p-0
+                          className="mr-3 h-14 w-14 rounded-sm appearance-none cursor-pointer bg-transparent p-0
                             [&::-moz-color-swatch]:h-full [&::-moz-color-swatch]:w-full [&::-moz-color-swatch]:border-none
                             [&::-webkit-color-swatch-wrapper]:p-0 
                             [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
@@ -496,11 +496,11 @@ export default function ThemePage() {
                           value="#a04649"
                           />
                       </div>
-                      <div className="w-45 rounded-lg border-2 border-black" >
-                        <label className="ml-3 text-sm text-gray-400">Button Colour</label>
+                      <div className="w-45 h-14 rounded-lg border-2 border-black" >
+                        <label className="ml-3 text-sm text-gray-400" style={{fontFamily:"Avenir LT Std"}}>Button Colour</label>
                         <div className="w-[100px] overflow-hidden ml-3">
                           <input
-                            className="w-full border-b border-black outline-none bg-transparent focus:border-black"
+                            className="w-full border-b  outline-none bg-transparent "
                             defaultValue="#a04649"
                           />
                         </div>
@@ -508,13 +508,18 @@ export default function ThemePage() {
                     </div>
 
 
+
+
+
+
+
                     {/*button font colour */}                    
-                    <h2 className="mr-2 mt-10 text-lg">Button Font Colour</h2>
+                    <h2 className="mr-2 mt-2 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Button Font Colour</h2>
                     <div className="flex flex-row mt-2">
                       <div>
                         <input
                           type="color"
-                          className="mr-3 h-12 w-12 rounded-sm appearance-none cursor-pointer bg-transparent p-0
+                          className="mr-3 h-14 w-14 rounded-sm appearance-none cursor-pointer bg-transparent p-0
                             [&::-moz-color-swatch]:h-full [&::-moz-color-swatch]:w-full [&::-moz-color-swatch]:border-none
                             [&::-webkit-color-swatch-wrapper]:p-0 
                             [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
@@ -523,11 +528,11 @@ export default function ThemePage() {
                           value="#2ec2d6"
                           />
                       </div>
-                      <div className="w-45 rounded-lg border-2 border-black" >
-                        <label className="ml-3 text-sm text-gray-400">Button Font Colour</label>
+                      <div className="w-45 h-14 rounded-lg border-2 border-black" >
+                        <label className="ml-3 text-sm text-gray-400" style={{fontFamily:"Avenir LT Std"}}>Button Font Colour</label>
                         <div className="w-[100px] overflow-hidden ml-3">
                           <input
-                            className="w-full border-b border-black outline-none bg-transparent focus:border-black"
+                            className="w-full border-b outline-none bg-transparent"
                             defaultValue="#2ec2d6"
                           />
                         </div>
@@ -537,18 +542,22 @@ export default function ThemePage() {
 
                     
 
+
+
+
                 {/*font styling*/}
                 <div className="rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-700 p-6">
-                  <h2 className="mb-2 text-2xl font-semibold dark:text-white">Fonts</h2>
+                  <h2 className="mb-2 text-2xl font-semibold dark:text-white" style={{fontFamily:"Avenir LT Std"}}>Fonts</h2>
                     {/*font family*/}
+                    <h2 className="mr-2 mt-4 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Font Family</h2>
                     <FontEditor/>
                     {/*font colour */}                    
-                    <h2 className="mr-2 mt-10 text-lg">Font Colour</h2>
+                    <h2 className="mr-2 mt-2 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Font Colour</h2>
                     <div className="flex flex-row mt-2">
                       <div>
                         <input
                           type="color"
-                          className="mr-3 h-12 w-12 rounded-sm appearance-none cursor-pointer bg-transparent p-0
+                          className="mr-3 h-14 w-14 rounded-sm appearance-none cursor-pointer bg-transparent p-0
                             [&::-moz-color-swatch]:h-full [&::-moz-color-swatch]:w-full [&::-moz-color-swatch]:border-none
                             [&::-webkit-color-swatch-wrapper]:p-0 
                             [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
@@ -557,11 +566,11 @@ export default function ThemePage() {
                           value="#1a5276"
                           />
                       </div>
-                      <div className="w-45 rounded-lg border-2 border-black" >
-                        <label className="ml-3 text-sm text-gray-400">Font Colour</label>
+                      <div className="w-45 h-14 rounded-lg border-2 border-black" >
+                        <label className="ml-3 text-sm text-gray-400" style={{fontFamily:"Avenir LT Std"}}>Font Colour</label>
                         <div className="w-[100px] overflow-hidden ml-3">
                           <input
-                            className="w-full border-b border-black outline-none bg-transparent focus:border-black"
+                            className="w-full border-b outline-none bg-transparent "
                             defaultValue="#1a5276"
                           />
                         </div>

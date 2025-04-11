@@ -124,11 +124,13 @@ export function LinksProvider({ children }: { children: React.ReactNode }) {
 
   // Function to add a new regular link
   const addRegularLink = (link: RegularLink) => {
+    console.log("Adding new link:", link)
     setRegularLinks((prevLinks) => [...prevLinks, link])
   }
 
   // Function to update an existing regular link
   const updateRegularLink = (id: number, updatedFields: Partial<RegularLink>) => {
+    console.log("Updating link with ID:", id, "with fields:", updatedFields)
     setRegularLinks((prevLinks) => prevLinks.map((link) => (link.id === id ? { ...link, ...updatedFields } : link)))
   }
 
@@ -238,4 +240,3 @@ export function LinksProvider({ children }: { children: React.ReactNode }) {
 
 // Custom hook to use the links context
 export const useLinks = () => useContext(LinksContext)
-

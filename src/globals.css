@@ -119,3 +119,12 @@
   }
 }
 
+
+body, p, span, label, h1, h2, h3, h4, h5, h6, a, li, button, input, textarea {
+  font-family: "Avenir LT Std";
+}
+
+
+*{
+  font-family: "Avenir LT Std";
+}
