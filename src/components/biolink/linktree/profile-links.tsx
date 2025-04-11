@@ -39,8 +39,8 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { ScheduleDialog } from "@/components/biolink/linktree/schedule-dialog"
-import { useLinksStore } from "@/storage/links-store"
-import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
+// import { useLinksStore } from "@/storage/links-store"
+// import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
 import { useLinksStore } from "@/storage/links-store"
 import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
 
@@ -60,17 +60,6 @@ export function ProfileLinks() {
   const [activeLinkForSchedule, setActiveLinkForSchedule] = useState<number | null>(null)
 
   const { updateRegularLinks } = useUserLinks()
-
-  const {
-    regularLinks,
-    toggleActive:toggleLinkActive,
-    deleteLink,
-    toggleFavorite:toggleLinkFavorite,
-    incrementClicks:incrementLinkClicks,
-    updateThumbnail:updateLinkThumbnail,
-    updateRegularLink,
-    addRegularLink,
-  } = useLinks()
 
 
   const {
