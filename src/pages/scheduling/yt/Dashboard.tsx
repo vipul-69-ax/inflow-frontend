@@ -148,7 +148,8 @@ export default function YouTubeScheduler() {
       formData.append("title", videoTitle)
       formData.append("description", videoDescription)
       formData.append("tags", videoTags)
-      formData.append("userId", userId || "")
+      formData.append("user_id", userId || "")
+      console.log(userId,"jwowdo")
 
       if (videoScheduledTime) {
         formData.append("scheduledTime", new Date(videoScheduledTime).toISOString())

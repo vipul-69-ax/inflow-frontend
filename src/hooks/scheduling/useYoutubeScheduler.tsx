@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useAuthStore } from "@/storage/auth"
 import { useState } from "react"
 
 const API_BASE = "https://api.inflow.chat/api/scheduling/youtube" // Update this to match your backend
@@ -6,7 +7,7 @@ const API_BASE = "https://api.inflow.chat/api/scheduling/youtube" // Update this
 export function useYouTubeScheduler() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
+  const userId = useAuthStore().userId
   // 1. Exchange OAuth2 code for tokens
   const setOAuthToken = async (code: string) => {
     setLoading(true)
@@ -65,7 +66,7 @@ export function useYouTubeScheduler() {
   const fetchScheduledMedia = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`${API_BASE}/scheduled`)
+      const res = await fetch(`${API_BASE}/scheduled?userId=${userId}`)
       const data = await res.json()
       setLoading(false)
       return data

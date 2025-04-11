@@ -32,7 +32,7 @@ const AppWithParentRouter = () => {
               />
             }
           />
-          <Route path="/bio/:username" element={<UserProfilePage />} />
+          <Route path="/:username" element={<UserProfilePage />} />
           <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
         </Routes>
       </BrowserRouter>
@@ -47,7 +47,7 @@ const AppWithParentRouter = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
           <Route path="/forgot-password" element={<ResetPasswordPage />} />
-          <Route path="/bio/:username" element={<UserProfilePage />} />
+          <Route path="/:username" element={<UserProfilePage />} />
 
         </Routes>
       </BrowserRouter>
@@ -68,7 +68,7 @@ const AppWithParentRouter = () => {
             <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
             <Route path="/scheduling/*" element={<SchedulingPage/>} />
             <Route path="/payments" element={<PricingPage/>}/>
-            <Route path="/bio/:username" element={<UserProfilePage />} />
+            <Route path="/:username" element={<UserProfilePage />} />
           </Routes>
         </main>
       </div>
