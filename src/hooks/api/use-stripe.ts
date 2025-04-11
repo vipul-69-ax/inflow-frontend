@@ -55,7 +55,7 @@ export function useStripe(): UseStripeReturn {
   const [error, setError] = useState<string | null>(null)
 
   // Use environment variable for API URL with fallback
-  const API_URL = "http://api.inflow.chat/api"
+  const API_URL = "https://api.inflow.chat/api"
 
   // Helper function for API requests
   const apiRequest = async (endpoint: string, method: string, data?: any) => {

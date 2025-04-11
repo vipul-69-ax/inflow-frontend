@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 export default function RegisterPage() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
+    displayName: "",
     username: "",
     email: "",
     password: "",
@@ -74,8 +75,14 @@ export default function RegisterPage() {
   const validateForm = () => {
     const errors: Record<string, string> = {}
 
+    if (!formData.displayName.trim()) {
+      errors.displayName = "Display Name is required"
+    }
+
     if (!formData.username.trim()) {
       errors.username = "Username is required"
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+      errors.username = "Username can only contain letters, numbers, and underscores"
     }
 
     if (!formData.email.trim()) {
@@ -110,6 +117,7 @@ export default function RegisterPage() {
 
     try {
       await signup({
+        displayName: formData.displayName,
         username: formData.username,
         email: formData.email,
         password: formData.password,
@@ -195,19 +203,36 @@ export default function RegisterPage() {
 
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="space-y-2">
+                <label htmlFor="displayName" className="block font-medium">
+                  Display Name
+                </label>
+                <Input
+                  id="displayName"
+                  type="text"
+                  placeholder="Enter your display name"
+                  className={`w-full ${formErrors.displayName ? "border-red-500" : ""}`}
+                  value={formData.displayName}
+                  onChange={handleChange}
+                  disabled={isLoading}
+                />
+                {formErrors.displayName && <p className="text-xs text-red-500">{formErrors.displayName}</p>}
+              </div>
+
+              <div className="space-y-2">
                 <label htmlFor="username" className="block font-medium">
                   Username
                 </label>
                 <Input
                   id="username"
                   type="text"
-                  placeholder="Enter your username"
+                  placeholder="Enter your username (letters, numbers, underscores only)"
                   className={`w-full ${formErrors.username ? "border-red-500" : ""}`}
                   value={formData.username}
                   onChange={handleChange}
                   disabled={isLoading}
                 />
                 {formErrors.username && <p className="text-xs text-red-500">{formErrors.username}</p>}
+                <p className="text-xs text-gray-500">Username can only contain letters, numbers, and underscores (_)</p>
               </div>
 
               <div className="space-y-2">
@@ -321,4 +346,3 @@ export default function RegisterPage() {
     </div>
   )
 }
-

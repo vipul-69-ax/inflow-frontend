@@ -38,7 +38,7 @@ export default function LoginPage() {
 
   // Get Zustand store actions
   const { setIsAuthenticated } = useAuthStore()
-
+  
   // Setup Google authentication
   const { renderButton } = useGoogleAuth({
     clientId: "473227188517-n690ie9aq3q0n1d6usmnel4mldn0amqb.apps.googleusercontent.com",

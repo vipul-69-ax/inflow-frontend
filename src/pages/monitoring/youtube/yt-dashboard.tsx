@@ -55,6 +55,10 @@ export default function YoutubeDashboard() {
 
   // Handle adding a new user
   const handleAddUser = async () => {
+    if(monitoredUsers.length>=5){
+      alert("You can only monitor 5 accounts at a time.")
+      return
+    }
     if (!newUsername.trim()) return;
   
     let extractedUsername = newUsername.trim();

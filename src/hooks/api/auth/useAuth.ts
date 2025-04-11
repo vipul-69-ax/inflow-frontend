@@ -5,6 +5,7 @@ import { useState, useCallback } from "react"
 import axios from "axios"
 import { useAuthStore } from "@/storage/auth"
 import { useSettingsStore } from "@/storage/settings-store"
+import { useSettingsHook } from "../biolink/useSettings"
 
 // Types
 export interface User {
@@ -26,6 +27,7 @@ export interface LoginCredentials {
 }
 
 export interface SignupData {
+  displayName:string
   username: string
   email: string
   password: string
@@ -57,7 +59,11 @@ api.interceptors.response.use(
 
       try {
         // Try to refresh the token
-        const { data } = await api.post("/auth/refresh-token")
+        const { data } = await api.post("/auth/refresh-token", {
+          headers: {
+            Authorization: `Bearer ${useAuthStore.getState().userId}`,
+          },
+        })
 
         // If successful, update the token and retry the original request
         if (data.accessToken) {
@@ -92,7 +98,7 @@ export function useAuth() {
     error: null,
   })
   const {setUserId} = useAuthStore()
-  const {setDisplayName, setEmail} = useSettingsStore()
+  const {setDisplayName, setEmail, setUsername} = useSettingsStore()
   /**
    * Login with email and password
    */
@@ -104,8 +110,12 @@ export function useAuth() {
 
       localStorage.setItem("accessToken", data.accessToken)
       
+      useAuthStore.setState({
+        username: data.user.username,
+      })
       setUserId(data.user.id)
-      setDisplayName(data.user.username)
+      setDisplayName(data.user.displayName)
+      setUsername(data.user.username)
       setEmail(data.user.email) 
       setState({
         user: data.user,
@@ -271,6 +281,11 @@ export function useAuth() {
       const { data } = await api.post("/auth/google", { token })
 
       localStorage.setItem("accessToken", data.accessToken)
+
+      setUserId(data.user.id)
+      setDisplayName(data.user.displayName)
+      setUsername(data.user.username)
+      setEmail(data.user.email)
 
       setState({
         user: data.user,

@@ -7,6 +7,7 @@ interface AuthState {
   hasVisitedBefore: boolean
   isAuthenticated: boolean
   userId: string | null
+  username: string
 }
 
 // Define the store's actions type
@@ -15,7 +16,7 @@ interface AuthActions {
   setHasVisitedBefore: (value: boolean) => void
   setIsAuthenticated: (value: boolean) => void
   setUserId: (userId: string | null) => void
-
+  setUsername:(username:string)=>void
   // Helper actions
   markAsVisited: () => void
   login: (userId: string) => void
@@ -38,7 +39,9 @@ export const useAuthStore = create<AuthStore>()(
       hasVisitedBefore: false,
       isAuthenticated: false,
       userId: null,
+      username: "",
 
+      setUsername: (username:string): void => set({ username }),
       // Actions to update individual values
       setHasVisitedBefore: (value: boolean): void => set({ hasVisitedBefore: value }),
 

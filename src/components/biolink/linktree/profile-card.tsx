@@ -2,13 +2,14 @@
 
 import { useState } from "react"
 import { SocialIcons } from "@/components/biolink/linktree/social-icons"
-import { useSettings } from "@/context/biolink/biolink-settings"
 import { EditProfileModal } from "@/components/biolink/linktree/edit-profile-modal"
+import { useSettingsStore } from "@/storage/settings-store"
+import { useSettingsHook } from "@/hooks/api/biolink/useSettings"
 
 export function ProfileCard() {
-  const { displayName, bio, profileImage } = useSettings()
+  const { displayName, bio, profileImage } = useSettingsStore()
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-
+  const {updateSettings} = useSettingsHook()
   return (
     <div className="rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-700 p-6 shadow-sm transition-colors duration-300">
       <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -58,7 +59,10 @@ export function ProfileCard() {
         </div>
       </div>
 
-      <EditProfileModal isOpen={isEditModalOpen} onOpenChange={setIsEditModalOpen} />
+      <EditProfileModal isOpen={isEditModalOpen} onOpenChange={setIsEditModalOpen} onSave={()=>{
+       updateSettings(useSettingsStore.getState())
+
+      }}  />
     </div>
   )
 }

@@ -3,6 +3,7 @@
 import { Route, Routes } from "react-router-dom"
 import SchedulingAuth from "@/pages/scheduling/AuthPage"
 import ScheduleFB from "@/pages/scheduling/fb/Dashboard"
+import YouTubeScheduler from "@/pages/scheduling/yt/Dashboard"
 
 export default function SchedulingPage() {
 
@@ -14,7 +15,9 @@ export default function SchedulingPage() {
         <Route
             path="/facebook" index element={<ScheduleFB/>}
         />
-        
+        <Route
+            path="/youtube" index element={<YouTubeScheduler/>}
+        />
     </Routes>
   )
 }

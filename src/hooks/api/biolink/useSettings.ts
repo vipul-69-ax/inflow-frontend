@@ -9,7 +9,7 @@ import type { UserSettings, UpdateSettingsRequest } from "@/types/biolink/settin
 /**
  * Hook for interacting with the settings API
  */
-export function useSettings() {
+export function useSettingsHook() {
   const [settings, setSettings] = useState<UserSettings | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -27,10 +27,12 @@ export function useSettings() {
 
     setIsLoading(true)
     setError(null)
-
     try {
-      const response = await api.get<UserSettings>("/settings")
-      alert("Success")
+      const response = await api.get<UserSettings>("/profile", {
+        headers:{
+          "Authorization": `Bearer ${userId}`
+        }
+      })
       setSettings(response.data)
       return response.data
     } catch (err: any) {
@@ -51,11 +53,17 @@ export function useSettings() {
         throw new Error("User not authenticated")
       }
 
+
       setIsLoading(true)
       setError(null)
 
       try {
-        const response = await api.patch<UserSettings>("/settings", updates)
+        const response = await api.post<UserSettings>("/profile", updates, {
+          headers:{
+            "Authorization": `Bearer ${userId}`
+          }
+        })
+
         setSettings(response.data)
         return response.data
       } catch (err: any) {

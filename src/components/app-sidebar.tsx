@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { Calendar, Home, ChevronRight, InstagramIcon, MessageCircle, LinkIcon, LogOut, Star } from "lucide-react"
+import { Calendar, Home, ChevronRight, InstagramIcon, LinkIcon, LogOut, Star } from "lucide-react"
 import { useAuthStore } from "@/storage/auth"
 
 const ModernSidebar = () => {
@@ -39,12 +39,6 @@ const ModernSidebar = () => {
       path: "/monitoring",
       label: "Monitoring",
       icon: Calendar,
-    },
-    {
-      id: "chatbot",
-      path: "/chatbot",
-      label: "Chatbot",
-      icon: MessageCircle,
     },
     {
       id: "scheduling",

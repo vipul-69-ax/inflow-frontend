@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useState } from "react"
@@ -15,17 +16,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Instagram, Mail, Facebook, Youtube, Twitter, Linkedin, Github, AtSign, LinkIcon } from "lucide-react"
-import { useLinks } from "@/context/biolink/links-context"
 import { SocialIconDialog } from "@/components/biolink/linktree/social-icon-dialog"
 import { SocialIconButton } from "@/components/biolink/linktree/social-icon-button"
+import { SocialLink, useLinksStore } from "@/storage/links-store"
+import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
 
 interface SocialIconsProps {
   variant?: "default" | "compact"
   editable?: boolean
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function SocialIcons({ variant = "default", editable = true }: SocialIconsProps) {
-  const { socialLinks, addSocialLink, addRegularLink } = useLinks()
+  const { socialLinks, addSocialLink, addRegularLink } = useLinksStore()
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [newLinkTitle, setNewLinkTitle] = useState("")
   const [newLinkUrl, setNewLinkUrl] = useState("https://")
@@ -52,7 +55,19 @@ export function SocialIcons({ variant = "default", editable = true }: SocialIcon
 
   const [selectedSocial, setSelectedSocial] = useState<string | null>(null)
   const [isSocialDialogOpen, setIsSocialDialogOpen] = useState(false)
+  const { updateSocialLinks, updateRegularLinks } = useUserLinks()
 
+  const formatUrl = (url: string): string => {
+    const trimmed = url.trim()
+  
+    if (!trimmed) return ""
+    if (!/^https?:\/\//i.test(trimmed)) {
+      return `https://${trimmed}`
+    }
+  
+    return trimmed
+  }
+  
   // Update the handleAddSocial function to open the dialog for URL input
   const handleAddSocial = (socialName: string) => {
     setSelectedSocial(socialName)
@@ -63,52 +78,86 @@ export function SocialIcons({ variant = "default", editable = true }: SocialIcon
   // Update the handleSaveSocialLink function to ensure proper URL formatting
   const handleSaveSocialLink = (data: { name: string; url: string }) => {
     const socialToAdd = availableSocials.find((social) => social.name === data.name)
-    if (socialToAdd && !socialLinks.some((link) => link.name === data.name)) {
-      // Create a new social link object with the URL
-      const newSocialLink = {
-        name: socialToAdd.name,
-        icon: socialToAdd.icon,
-        url: data.url, // URL is already formatted in the SocialIconDialog
+    const updatedLinks = [...socialLinks]
+  
+    if (socialToAdd) {
+      const exists = socialLinks.find((link) => link.name === data.name)
+  
+      if (!exists) {
+        const newSocialLink: SocialLink = {
+          name: socialToAdd.name,
+          icon: "",
+          url: data.url,
+        }
+        addSocialLink(newSocialLink)
+        updatedLinks.push(newSocialLink)
+      } else {
+        // If it exists, it's coming from modal – already handled
+        const updated = updatedLinks.map((link) =>
+          link.name === data.name ? { ...link, url: data.url } : link
+        )
+        updateSocialLinks(updated)
+        return
       }
-      addSocialLink(newSocialLink)
+  
+      updateSocialLinks(updatedLinks)
     }
+  
     setIsSocialDialogOpen(false)
     setSelectedSocial(null)
   }
-
-  // Update the formatUrl function for regular links
-  const formatUrl = (url: string): string => {
-    if (!url.trim()) return url
-
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-      return `https://${url}`
-    }
-
-    return url
-  }
+  
 
   // Update the handleAddRegularLink function to use the formatUrl function
   const handleAddRegularLink = () => {
     if (newLinkTitle.trim() && newLinkUrl.trim()) {
-      addRegularLink({
+      const newLink = {
         id: Date.now(),
         title: newLinkTitle,
         url: formatUrl(newLinkUrl),
         active: true,
         clicks: 0,
-        favorite: false
-      })
+        favorite: false,
+      }
+  
+      addRegularLink(newLink)
+      updateRegularLinks([...useLinksStore.getState().regularLinks, newLink])
+  
       setNewLinkTitle("")
       setNewLinkUrl("")
       setIsAddDialogOpen(false)
     }
   }
-
+  
+ const renderIcon =(name:string)=>{
+    switch (name) {
+      case "Instagram":
+        return <Instagram className="h-5 w-5" />
+      case "Twitter":
+        return <Twitter className="h-5 w-5" />
+      case "Facebook":
+        return <Facebook className="h-5 w-5" />
+      case "LinkedIn":
+        return <Linkedin className="h-5 w-5" />
+      case "YouTube":
+        return <Youtube className="h-5 w-5" />
+      case "TikTok":
+        return <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+      </svg>
+        case "Email":
+        return <Mail className="h-5 w-5" />
+        case "Github":
+        return <Github className="h-5 w-5" />
+        default:
+          return <AtSign className="h-5 w-5" />
+  }
+}
   return (
     <>
       <div className="flex flex-wrap gap-2 items-center">
         {socialLinks.map((social, index) => (
-          <SocialIconButton key={index} name={social.name} icon={social.icon} url={social.url} editable={editable} />
+          <SocialIconButton key={index} name={social.name} icon={renderIcon(social.name)} url={social.url} editable={editable} />
         ))}
 
         {/* Add button - only show if editable */}

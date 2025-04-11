@@ -13,33 +13,11 @@ import ResetPasswordPage from "./pages/auth/forgot-password"
 import VerifyEmailPage from "./pages/auth/email-verify"
 import PricingPage from "./components/payments/pricing-page"
 import SchedulingPage from "./routers/scheduling"
-
-
-const Chatbot = () => {
-  return (
-    <div className="w-full h-full">
-      <iframe
-        src="https://chatbot-client-yy45.onrender.com/"
-        title="Embedded Next App"
-        style={{
-          width: "100%",
-          height: "100%",
-          border: "none",
-          margin: 0,
-          padding: 0,
-          overflow: "auto",
-        }}
-        frameBorder="0"
-      />
-    </div>
-  )
-}
-
+import UserProfilePage from "./pages/UserProfilePage"
 
 const AppWithParentRouter = () => {
   const [sidebarHovered, setSidebarHovered] = useState(false)
   const { hasVisitedBefore, setHasVisitedBefore, isAuthenticated } = useAuthStore()
-  console.log(localStorage.getItem("accessToken"))
   if (!hasVisitedBefore && !isAuthenticated) {
     return (
       <BrowserRouter>
@@ -54,6 +32,7 @@ const AppWithParentRouter = () => {
               />
             }
           />
+          <Route path="/bio/:username" element={<UserProfilePage />} />
           <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
         </Routes>
       </BrowserRouter>
@@ -68,6 +47,8 @@ const AppWithParentRouter = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
           <Route path="/forgot-password" element={<ResetPasswordPage />} />
+          <Route path="/bio/:username" element={<UserProfilePage />} />
+
         </Routes>
       </BrowserRouter>
     )
@@ -84,10 +65,10 @@ const AppWithParentRouter = () => {
             <Route path="/" element={<Navigate to={"/biolink"} />} />
             <Route path="/biolink/*" element={<Biolink />} />
             <Route path="/monitoring/*" element={<Monitoring />} />
-            <Route path="/chatbot" element={<Chatbot />} />
             <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
             <Route path="/scheduling/*" element={<SchedulingPage/>} />
             <Route path="/payments" element={<PricingPage/>}/>
+            <Route path="/bio/:username" element={<UserProfilePage />} />
           </Routes>
         </main>
       </div>

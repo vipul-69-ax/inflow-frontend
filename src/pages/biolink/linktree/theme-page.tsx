@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { ArrowLeft, Share2 } from "lucide-react"
 import { MobilePreview } from "@/components/biolink/linktree/mobile-preview"
 import { Button } from "@/components/ui/button"
-import { useSettings } from "@/context/biolink/biolink-settings"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
@@ -12,11 +11,14 @@ import { Switch } from "@/components/ui/switch"
 import { Slider } from "@/components/ui/slider"
 import { HexColorPicker } from "react-colorful"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useSettingsStore } from "@/storage/settings-store"
+import { useSettingsHook } from "@/hooks/api/biolink/useSettings"
 
 export default function ThemePage() {
-  const { themeSettings, setThemeSettings, saveSettings, appearancePreferences, setAppearancePreference } =
-    useSettings()
+  const { themeSettings, setThemeSettings, appearancePreferences, setAppearancePreference } =
+    useSettingsStore()
+const {updateSettings} = useSettingsHook()
   const [activeTab, setActiveTab] = useState("themes")
   const [selectedTheme, setSelectedTheme] = useState(() => themeSettings.themeColor || "default")
   const [buttonStyle, setButtonStyle] = useState(() => themeSettings.buttonStyle || "rounded")
@@ -249,9 +251,11 @@ export default function ThemePage() {
     }
   }
 
+  const navigate = useNavigate()
   // Save theme settings
   const handleSaveTheme = async () => {
-    await saveSettings()
+    await updateSettings(useSettingsStore.getState())
+    navigate("/biolink")
   }
 
   // Get background style for theme preview

@@ -4,8 +4,9 @@ import type React from "react"
 
 import { useState } from "react"
 import { EditSocialIconModal } from "@/components/biolink/linktree/edit-social-icon-modal"
-import { useLinks } from "@/context/biolink/links-context"
 import { X } from "lucide-react"
+import { useLinksStore } from "@/storage/links-store"
+import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
 
 interface SocialIconButtonProps {
   name: string
@@ -16,7 +17,8 @@ interface SocialIconButtonProps {
 
 export function SocialIconButton({ name, icon, url, editable = true }: SocialIconButtonProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const { removeSocialLink } = useLinks()
+  const { socialLinks, removeSocialLink } = useLinksStore()
+  const { updateSocialLinks } = useUserLinks()
 
   // Handle click on the social icon
   const handleIconClick = () => {
@@ -52,7 +54,11 @@ export function SocialIconButton({ name, icon, url, editable = true }: SocialIco
       {/* Remove button */}
       {editable && (
         <button
-          onClick={() => removeSocialLink(name)}
+          onClick={() => {removeSocialLink(name)
+            updateSocialLinks(socialLinks.filter((link) => link.name !== name))
+
+
+          }}
           className="absolute -top-2 -right-2 rounded-full bg-red-500 text-white p-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           aria-label={`Remove ${name}`}
         >

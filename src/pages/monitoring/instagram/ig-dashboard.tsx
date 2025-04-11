@@ -29,7 +29,6 @@ export default function InstagramDashboard() {
   // Fetch all monitored users
   const { users: monitoredUsers, loading: usersLoading, refetch: refetchUsers } = useInstagramUsers()
 
-  console.log("users", monitoredUsers)
   // Add a new user
   const { addUser, loading: addingUser, error: addError, success: addSuccess } = useAddInstagramUser()
 
@@ -56,6 +55,11 @@ export default function InstagramDashboard() {
 
   // Handle adding a new user
   const handleAddUser = async () => {
+    if(monitoredUsers.length>=5){
+      alert("You can only monitor 5 accounts at a time.")
+      return
+    }
+
     if (!newUsername.trim()) return;
   
     // Check if input is a full Instagram URL
