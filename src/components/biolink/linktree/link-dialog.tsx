@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { z } from "zod"
 
 interface LinkData {
   title: string
@@ -16,9 +17,15 @@ interface LinkData {
 interface LinkDialogProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
-  onSave?: (data: LinkData) => void
-  initialData?: LinkData
+  onSave?: (data: LinkData, id?: number) => void // <== Add optional `id`
+  initialData?: LinkData & { id?: number } // <== So we can pass the id
 }
+
+const linkSchema = z.object({
+  title: z.string().min(1, { message: "Title is required" }),
+  url: z.string().url({ message: "Please enter a valid URL" }),
+})
+
 
 export function LinkDialog({ isOpen, onOpenChange, onSave, initialData }: LinkDialogProps) {
   const [title, setTitle] = useState("")
@@ -39,30 +46,36 @@ export function LinkDialog({ isOpen, onOpenChange, onSave, initialData }: LinkDi
     }
   }, [isOpen, initialData])
 
+
+  
   const validateForm = (): boolean => {
-    const newErrors: { title?: string; url?: string } = {}
-
-    if (!title.trim()) {
-      newErrors.title = "Title is required"
+    const result = linkSchema.safeParse({ title, url })
+  
+    if (!result.success) {
+      const newErrors: { title?: string; url?: string } = {}
+      result.error.errors.forEach((err) => {
+        if (err.path[0] === "title") newErrors.title = err.message
+        if (err.path[0] === "url") newErrors.url = err.message
+      })
+      setErrors(newErrors)
+      return false
     }
-
-    if (!url.trim()) {
-      newErrors.url = "URL is required"
-    } else if (!/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(url)) {
-      newErrors.url = "Please enter a valid URL"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+  
+    setErrors({})
+    return true
   }
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
     if (validateForm()) {
       if (onSave) {
-        onSave({ title, url })
+        onSave({ title, url }, initialData?.id) // <== include the id when editing
       }
+      // if (onSave) {
+      //   onSave({ title, url })
+      // }
       onOpenChange(false)
     }
   }
@@ -121,4 +134,3 @@ export function LinkDialog({ isOpen, onOpenChange, onSave, initialData }: LinkDi
     </Dialog>
   )
 }
-

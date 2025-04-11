@@ -2,6 +2,7 @@
 "use client"
 
 import { useState } from "react"
+import { useLinks } from "@/context/biolink/links-context"
 import { Button } from "@/components/ui/button"
 import { LinkDialog } from "@/components/biolink/linktree/link-dialog"
 import { ThumbnailUploadDialog } from "@/components/biolink/linktree/thumbnail-upload-dialog"
@@ -21,6 +22,7 @@ import {
   EyeOff,
   Clock,
   CalendarRange,
+  Pencil,
 } from "lucide-react"
 import {
   DropdownMenu,
@@ -37,11 +39,14 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { ScheduleDialog } from "@/components/biolink/linktree/schedule-dialog"
+// import { useLinksStore } from "@/storage/links-store"
+// import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
 import { useLinksStore } from "@/storage/links-store"
 import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
 
 export function ProfileLinks() {
   const [isAddLinkOpen, setIsAddLinkOpen] = useState(false)
+  const [isEditLinkOpen, setIsEditLinkOpen] = useState(false)
   const [isThumbnailDialogOpen, setIsThumbnailDialogOpen] = useState(false)
   const [activeLinkForThumbnail, setActiveLinkForThumbnail] = useState<number | null>(null)
   const [clickAnalyticsOpen, setClickAnalyticsOpen] = useState(false)
@@ -56,6 +61,7 @@ export function ProfileLinks() {
 
   const { updateRegularLinks } = useUserLinks()
 
+
   const {
     regularLinks,
     toggleActive:toggleLinkActive,
@@ -69,7 +75,7 @@ export function ProfileLinks() {
 
   const updateLinkSchedule =(id:any, scheduleStart:any, scheduleEnd:any, timezone:any) =>
     updateRegularLink(id, { scheduleStart, scheduleEnd, timezone })
-
+  
   const handleLinkClick = (id: number) => {
     incrementLinkClicks(id)
   }
@@ -88,6 +94,12 @@ export function ProfileLinks() {
     updateRegularLinks([...regularLinks, newLink])
   }
 
+  const handleUpdateLink = (data: { title: string; url: string }, id?: number) => {
+    if (id !== undefined) {
+      updateRegularLink(id, data)
+    }
+  }
+  
   const handleShareLink = (url: string) => {
     // Skip Web Share API entirely and go straight to clipboard
     copyToClipboard(url)
@@ -415,7 +427,7 @@ export function ProfileLinks() {
                         />
                       </div>
                     ) : (
-                      <MoreVertical className="h-5 w-5 text-gray-400 dark:text-gray-500 transition-colors duration-300" />
+                      <MoreVertical className="h-5 w-5 text-gray-400 dark:text-gray-500 transition-colors duration-300 hidden" />
                     )}
                   </div>
                   <div>
@@ -506,6 +518,9 @@ export function ProfileLinks() {
                       </Tooltip>
                     </TooltipProvider>
 
+
+
+
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -525,6 +540,10 @@ export function ProfileLinks() {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
+
+
+
+
 
                     <TooltipProvider>
                       <Tooltip>
@@ -551,6 +570,10 @@ updateRegularLinks(
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
+
+
+
+
 
                     <TooltipProvider>
                       <Tooltip>
@@ -657,7 +680,10 @@ updateRegularLinks(
                     </DropdownMenu>
                   </div>
 
-                  {/* Edit and Delete buttons (desktop only) */}
+
+
+
+                  {/* Delete buttons (desktop only) */}
                   <div className="hidden md:flex items-center space-x-2">
                     <Button
                       variant="ghost"
@@ -673,6 +699,24 @@ updateRegularLinks(
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   </div>
+
+
+                  {/* Edit button (desktop only) */}
+                  <div className="hidden md:flex items-center space-x-2">
+                   <Button
+                     variant="ghost"
+                     size="icon"
+                    //  onClick={() =>updateRegularLink(link.id,)} // 👈 update this with your actual edit logic
+                     className="h-7 w-7 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300"
+                     aria-label="Edit link"
+                     onClick={() => setIsEditLinkOpen(true)}
+                   >
+                     <Pencil className="h-3.5 w-3.5" />
+                   </Button>
+                   <LinkDialog isOpen={isEditLinkOpen} onOpenChange={setIsEditLinkOpen} onSave={handleUpdateLink} initialData ={link}/>
+                  </div>
+
+
 
                   {/* Toggle switch */}
                   <Switch

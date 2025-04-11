@@ -183,6 +183,11 @@ export function MobilePreview({ className }: MobilePreviewProps) {
     }
   }
 
+
+
+
+
+
   // Improve button styling to match each theme perfectly
   const getButtonStyle = () => {
     // Get button radius based on settings
