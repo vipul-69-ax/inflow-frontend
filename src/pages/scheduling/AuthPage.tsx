@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Facebook, Instagram, Youtube, ChevronRight } from "lucide-react"
+import { Facebook, Youtube, ChevronRight } from "lucide-react"
 import { useAuthorizationUrl, useAccessToken, useFacebookPages } from "@/hooks/scheduling/useFacebookScheduler"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -92,6 +92,10 @@ export default function AuthPage() {
 
   const handleAuth = async (platform: string) => {
     setSelectedPlatform(platform)
+    if(platform ==="youtube"){
+      navigate("/scheduling/youtube")
+    }
+    if(platform==="facebook"){
     setIsLoading(facebookAuthLoading)
     const token = localStorage.getItem("fb_access_token")
     const page_data = localStorage.getItem("fb_page_data")
@@ -108,6 +112,9 @@ export default function AuthPage() {
     }
   }
 
+  
+  }
+
   const platforms = [
     {
       id: "facebook",
@@ -115,13 +122,6 @@ export default function AuthPage() {
       icon: <Facebook className="h-5 w-5" />,
       description: "Schedule posts and videos",
       color: "bg-[#1877F2]",
-    },
-    {
-      id: "instagram",
-      name: "Instagram",
-      icon: <Instagram className="h-5 w-5" />,
-      description: "Schedule posts and reels",
-      color: "bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]",
     },
     {
       id: "youtube",

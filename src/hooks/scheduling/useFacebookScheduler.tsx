@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE_URL = `http://localhost:6969/fb`
+const API_BASE_URL = `https://api.inflow.chat/api/scheduling/facebook`
 
 export const useAuthorizationUrl = () => {
   const [url, setUrl] = useState<string | null>(null);
@@ -110,7 +110,12 @@ export const useFacebookScheduler = () => {
         return { jobs: [], grouped: { posts: [], reels: [], stories: [] } }
       }
 
-      setScheduledJobs({ data: response.data, loading: false, error: null })
+      const res = response.data
+      const finalRes = response.data.jobs.filter((i:any)=>{
+        return i.platform == "fb" && i.details.page_id == JSON.parse(localStorage.getItem("fb_page_data") || "{}").id
+      })
+      res['jobs'] = finalRes
+      setScheduledJobs({ data: res, loading: false, error: null })
       return response.data
     } catch (error: any) {
       console.error("Error getting scheduled jobs:", error)

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import type React from "react"
@@ -17,8 +18,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { useSettings } from "@/context/biolink/biolink-settings"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { useSettingsStore } from "@/storage/settings-store"
 
 interface EditProfileModalProps {
   isOpen: boolean
@@ -27,18 +28,21 @@ interface EditProfileModalProps {
 }
 
 export function EditProfileModal({ isOpen, onOpenChange, onSave }: EditProfileModalProps) {
-  const { displayName, bio, profileImage, setDisplayName, setBio, setProfileImage, isSaving } =
-    useSettings()
+  const { displayName, bio, profileImage, setDisplayName, setBio, setProfileImage, isSaving, username, setUsername } =
+    useSettingsStore()
+  
+  
   const fileInputRef = useRef<HTMLInputElement>(null)
-
   const [formData, setFormData] = useState({
     name: displayName,
     bio: bio,
+    username: username
   })
   const [imagePreview, setImagePreview] = useState<string | null>(profileImage)
   const [errors, setErrors] = useState({
     name: "",
     bio: "",
+    username:""
   })
 
   // Update form data when props change
@@ -47,6 +51,7 @@ export function EditProfileModal({ isOpen, onOpenChange, onSave }: EditProfileMo
       setFormData({
         name: displayName,
         bio: bio,
+        username:username
       })
       setImagePreview(profileImage)
     }
@@ -68,7 +73,7 @@ export function EditProfileModal({ isOpen, onOpenChange, onSave }: EditProfileMo
       newErrors.bio = "Bio must be less than 160 characters"
     }
 
-    setErrors(newErrors)
+    setErrors(newErrors as any)
     return !newErrors.name && !newErrors.bio
   }
 
@@ -117,7 +122,9 @@ export function EditProfileModal({ isOpen, onOpenChange, onSave }: EditProfileMo
       // Update context values first
       setDisplayName(formData.name)
       setBio(formData.bio)
+      setUsername(formData.username)
       setProfileImage(imagePreview)
+
 
       // No need to call saveSettings() here - changes will be saved when user exits the site
       // We only update the store, which marks hasChanges as true
@@ -208,15 +215,39 @@ export function EditProfileModal({ isOpen, onOpenChange, onSave }: EditProfileMo
 
             <div className="grid gap-2">
               <Label htmlFor="name" className="flex items-center">
-                Name
+                Display Name
                 <span className="ml-1 text-xs text-muted-foreground">{formData.name.length}/50</span>
               </Label>
+
               <Input
-                id="name"
+                id="displayName"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Enter your name"
+                className={errors.name ? "border-red-500" : ""}
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? "name-error" : undefined}
+              />
+              {errors.name && (
+                <p id="name-error" className="text-xs text-red-500">
+                  {errors.name}
+                </p>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="name" className="flex items-center">
+                Username
+                <span className="ml-1 text-xs text-muted-foreground">{formData.username.length}/50</span>
+              </Label>
+
+              <Input
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="Enter username"
                 className={errors.name ? "border-red-500" : ""}
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "name-error" : undefined}

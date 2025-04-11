@@ -64,6 +64,10 @@ export default function TiktokDashboard() {
   }
 
   const handleAddUser = async () => {
+    if(monitoredUsers.length>=5){
+      alert("You can only monitor 5 accounts at a time.")
+      return
+    }
     if (!username.trim()) {
       return;
     }

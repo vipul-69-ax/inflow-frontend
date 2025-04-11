@@ -1,18 +1,19 @@
 "use client"
 
 import React from "react"
-import { useSettings } from "@/context/biolink/biolink-settings"
-import { useLinks } from "@/context/biolink/links-context"
 import { cn } from "@/lib/utils"
+import { useSettingsStore } from "@/storage/settings-store"
+import { useLinksStore } from "@/storage/links-store"
+import { AtSign, Facebook, Github, Instagram, Linkedin, Mail, Twitter, Youtube } from "lucide-react"
 
 interface MobilePreviewProps {
   className?: string
 }
 
 export function MobilePreview({ className }: MobilePreviewProps) {
-  const { displayName, bio, profileImage, themeSettings } = useSettings()
-  const { socialLinks, regularLinks } = useLinks()
-
+  const { displayName, bio, profileImage, themeSettings } = useSettingsStore()
+  const { socialLinks, regularLinks } = useLinksStore()
+  
   // Helper function to adjust color brightness
   const adjustColor = (hex: string): string => {
     return hex // Simplified for this example
@@ -24,7 +25,7 @@ export function MobilePreview({ className }: MobilePreviewProps) {
     if (themeSettings?.themeColor === "custom" && themeSettings?.customBackground) {
       if (themeSettings.backgroundType === "gradient") {
         return {
-          background: `linear-gradient(135deg, ${themeSettings.customBackground}, ${adjustColor(themeSettings.customBackground, -20)})`,
+          background: `linear-gradient(135deg, ${themeSettings.customBackground}, ${adjustColor(themeSettings.customBackground)})`,
         }
       }
       return { backgroundColor: themeSettings.customBackground }
@@ -368,6 +369,30 @@ export function MobilePreview({ className }: MobilePreviewProps) {
     return lightThemes.includes(themeSettings?.themeColor || "")
   }
 
+  const renderIcon =(name:string)=>{
+    switch (name) {
+      case "Instagram":
+        return <Instagram className="h-5 w-5" />
+      case "Twitter":
+        return <Twitter className="h-5 w-5" />
+      case "Facebook":
+        return <Facebook className="h-5 w-5" />
+      case "LinkedIn":
+        return <Linkedin className="h-5 w-5" />
+      case "YouTube":
+        return <Youtube className="h-5 w-5" />
+      case "TikTok":
+        return <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+      </svg>
+        case "Email":
+        return <Mail className="h-5 w-5" />
+        case "Github":
+        return <Github className="h-5 w-5" />
+        default:
+          return <AtSign className="h-5 w-5" />
+  }
+}
 
   // Update the JSX to use these enhanced styling functions
   return (
@@ -422,10 +447,9 @@ export function MobilePreview({ className }: MobilePreviewProps) {
                     className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-colors hover:bg-white/30"
                     aria-label={social.name}
                   >
-                    {React.cloneElement(social.icon as React.ReactElement, {
-                      style: getTextColor(),
-                      className: "h-5 w-5",
-                    })}
+                    {
+                      renderIcon(social.name)
+                    }
                   </a>
                 ))}
               </div>

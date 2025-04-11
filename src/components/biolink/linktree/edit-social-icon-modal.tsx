@@ -5,8 +5,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { useLinks } from "@/context/biolink/links-context"
 import { AlertCircle } from "lucide-react"
+import { useLinksStore } from "@/storage/links-store"
+import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
 
 interface EditSocialIconModalProps {
   isOpen: boolean
@@ -16,10 +17,10 @@ interface EditSocialIconModalProps {
 }
 
 export function EditSocialIconModal({ isOpen, onClose, socialName, socialUrl }: EditSocialIconModalProps) {
-  const { socialLinks, addSocialLink, removeSocialLink } = useLinks()
+  const { socialLinks, addSocialLink, removeSocialLink } = useLinksStore()
   const [url, setUrl] = useState(socialUrl || "")
   const [error, setError] = useState<string | null>(null)
-
+  const {updateSocialLinks} = useUserLinks()
   // Reset form when dialog opens/closes
   useEffect(() => {
     if (isOpen) {
@@ -95,22 +96,35 @@ export function EditSocialIconModal({ isOpen, onClose, socialName, socialUrl }: 
 
   const handleSave = () => {
     if (validateUrl(url)) {
-      // Find the existing social link
-      const existingSocial = socialLinks.find((link) => link.name === socialName)
-
-      if (existingSocial) {
-        // Remove the old one and add the updated one
-        removeSocialLink(socialName)
-        addSocialLink({
-          ...existingSocial,
-          url: formatUrl(url),
+      const formatted = formatUrl(url)
+  
+      // Clone current socialLinks
+      const updatedLinks = [...socialLinks]
+  
+      // Find existing and replace or push new
+      const existingIndex = updatedLinks.findIndex((link) => link.name === socialName)
+  
+      if (existingIndex !== -1) {
+        updatedLinks[existingIndex] = {
+          ...updatedLinks[existingIndex],
+          url: formatted,
+        }
+      } else {
+        updatedLinks.push({
+          name: socialName,
+          icon: "", // Optional: fill if needed
+          url: formatted,
         })
       }
-
+  
+      // Update Zustand and backend
+      removeSocialLink(socialName)
+      addSocialLink({ name: socialName, icon: "", url: formatted })
+      updateSocialLinks(updatedLinks)
+  
       onClose()
     }
   }
-
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[425px]">
