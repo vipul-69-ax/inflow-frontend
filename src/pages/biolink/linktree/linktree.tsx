@@ -18,7 +18,6 @@ export default function DashboardPage() {
   const [copied, setCopied] = useState(false)
 
   // Get the current user's username - in a real app, this would come from your auth system
-  const username = "yourusername" // Replace with actual username from your auth system
   const store = useSettingsStore()
 
   // Construct the shareable link
