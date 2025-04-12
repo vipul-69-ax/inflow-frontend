@@ -22,7 +22,7 @@ export default function DashboardPage() {
   const store = useSettingsStore()
 
   // Construct the shareable link
-  const shareableLink = `https://inflow.chat/bio/${store.username}`
+  const shareableLink = `https://inflow.chat/${store.username}`
 
   // Redirect if not authenticated
   useInitializeSettingsFromBackend()
@@ -163,7 +163,7 @@ export default function DashboardPage() {
                 variant="outline"
                 className="flex items-center gap-2"
                 onClick={() => {
-                  window.location.href = `mailto:?subject=Check out my Linktree&body=Here's my Linktree profile: https://inflow.chat/bio/${store.username}`
+                  window.location.href = `mailto:?subject=Check out my Linktree&body=Here's my Linktree profile: https://inflow.chat/${store.username}`
                 }}
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

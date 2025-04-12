@@ -14,6 +14,7 @@ import VerifyEmailPage from "./pages/auth/email-verify"
 import PricingPage from "./components/payments/pricing-page"
 import SchedulingPage from "./routers/scheduling"
 import UserProfilePage from "./pages/UserProfilePage"
+import { TestPage } from "./test"
 
 // This is the parent component that provides the BrowserRouter
 const AppWithParentRouter = () => {
@@ -33,34 +34,34 @@ const AppRoutes = () => {
   
   if (!hasVisitedBefore && !isAuthenticated) {
     return (
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <LandingPage
-              onPress={() => {
-                setHasVisitedBefore(true)
-              }}
-            />
-          }
-        />
-        <Route path="/bio/:username" element={<UserProfilePage />} />
-        <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <LandingPage
+                onPress={() => {
+                  setHasVisitedBefore(true)
+                }}
+              />
+            }
+          />
+          <Route path="/:username" element={<UserProfilePage />} />
+          <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+        </Routes>
     )
   }
 
   if (!isAuthenticated && hasVisitedBefore) {
     return (
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-        <Route path="/forgot-password" element={<ResetPasswordPage />} />
-        <Route path="/bio/:username" element={<UserProfilePage />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+          <Route path="/forgot-password" element={<ResetPasswordPage />} />
+          <Route path="/bio/:username" element={<UserProfilePage />} />
+
+        </Routes>
     )
   }
 
@@ -73,23 +74,23 @@ const AppRoutes = () => {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       ) : (
-        <div className="flex h-screen">
-          <div onMouseEnter={() => setSidebarHovered(true)} onMouseLeave={() => setSidebarHovered(false)}>
-            <ModernSidebar />
-          </div>
-          <main className={`flex-1 overflow-auto transition-all duration-300 ${sidebarHovered ? "ml-64" : "ml-20"}`}>
-            <Routes>
-              <Route path="/" element={<Navigate to="/biolink" />} />
-              <Route path="/biolink/*" element={<Biolink />} />
-              <Route path="/monitoring/*" element={<Monitoring />} />
-              <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-              <Route path="/scheduling/*" element={<SchedulingPage/>} />
-              <Route path="/payments" element={<PricingPage/>}/>
-              <Route path="/bio/:username" element={<UserProfilePage />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-          </main>
+      <div className="flex h-screen">
+        <div onMouseEnter={() => setSidebarHovered(true)} onMouseLeave={() => setSidebarHovered(false)}>
+          <ModernSidebar />
         </div>
+        <main className={`flex-1 overflow-auto transition-all duration-300 ${sidebarHovered ? "ml-64" : "ml-20"}`}>
+          <Routes>
+            <Route path="/" element={<Navigate to={"/biolink"} />} />
+            <Route path="/biolink/*" element={<Biolink />} />
+            <Route path="/monitoring/*" element={<Monitoring />} />
+            <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+            <Route path="/scheduling/*" element={<SchedulingPage/>} />
+            <Route path="/payments" element={<PricingPage/>}/>
+            <Route path="/:username" element={<UserProfilePage />} />
+            <Route path="/test" element={<TestPage/>} />
+          </Routes>
+        </main>
+      </div>
       )}
     </>
   )
