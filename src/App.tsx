@@ -29,7 +29,20 @@ const AppWithParentRouter = () => {
 const AppRoutes = () => {
   const [sidebarHovered, setSidebarHovered] = useState(false)
   const location = useLocation();
-  const isBioPage = location.pathname.startsWith("/bio/");
+  const path = location.pathname
+  //const isBioPage = location.pathname.startsWith("/bio/");
+  const isBioPage = !(
+    path === "/" ||
+    path === "" ||
+    path.startsWith("/verify-email") ||
+    path.startsWith("/register") ||
+    path.startsWith("/forgot-password") ||
+    path.startsWith("/biolink") ||
+    path.startsWith("/monitoring") ||
+    path.startsWith("/scheduling") ||
+    path.startsWith("/payments") ||
+    path.startsWith("/test")
+  )
   const { hasVisitedBefore, setHasVisitedBefore, isAuthenticated } = useAuthStore()
   
   if (!hasVisitedBefore && !isAuthenticated) {
@@ -59,7 +72,7 @@ const AppRoutes = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
           <Route path="/forgot-password" element={<ResetPasswordPage />} />
-          <Route path="/bio/:username" element={<UserProfilePage />} />
+          <Route path="/:username" element={<UserProfilePage />} />
 
         </Routes>
     )
@@ -70,7 +83,7 @@ const AppRoutes = () => {
     <>
       {isBioPage ? (
         <Routes>
-          <Route path="/bio/:username" element={<UserProfilePage />} />
+          <Route path="/:username" element={<UserProfilePage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       ) : (
