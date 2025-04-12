@@ -94,10 +94,13 @@ export function ProfileLinks() {
     updateRegularLinks([...regularLinks, newLink])
   }
 
-  const handleUpdateLink = (data: { title: string; url: string }, id?: number) => {
+  const handleUpdateLink = async(data: { title: string; url: string }, id?: number) => {
     if (id !== undefined) {
       updateRegularLink(id, data)
+      // console.log(regularLinks)
+      setTimeout(async()=>await updateRegularLinks(regularLinks),2000)
     }
+    setIsEditLinkOpen(false)
   }
   
   const handleShareLink = (url: string) => {

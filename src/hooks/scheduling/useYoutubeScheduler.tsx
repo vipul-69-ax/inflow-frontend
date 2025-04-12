@@ -2,7 +2,7 @@
 import { useAuthStore } from "@/storage/auth"
 import { useState } from "react"
 
-const API_BASE = "https://api.inflow.chat/api/scheduling/youtube" // Update this to match your backend
+const API_BASE = "http://localhost:3000/api/scheduling/youtube" // Update this to match your backend
 
 export function useYouTubeScheduler() {
   const [loading, setLoading] = useState(false)

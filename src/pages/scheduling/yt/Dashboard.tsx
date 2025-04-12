@@ -7,6 +7,7 @@ import { useYouTubeScheduler } from "@/hooks/scheduling/useYoutubeScheduler"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { ChevronLeft } from "lucide-react"
 import { useAuthStore } from "@/storage/auth"
+import { useS3Upload } from "@/hooks/api/storage/useS3Uploads"
 
 export default function YouTubeScheduler() {
   const [searchParams] = useSearchParams()
@@ -37,6 +38,8 @@ export default function YouTubeScheduler() {
   // Scheduled media state
   const [scheduledMedia, setScheduledMedia] = useState<any[]>([])
   const [streamDetails, setStreamDetails] = useState<any>(null)
+    const { uploadToS3, uploading } = useS3Upload()
+
 
   // Notification state
   const [notification, setNotification] = useState<{
@@ -142,9 +145,14 @@ export default function YouTubeScheduler() {
       return
     }
 
+      const result = await uploadToS3(videoFile)
+      if(!result.success || !result.url){
+        showNotification("error", result.error || "")
+        return
+      }
     try {
       const formData = new FormData()
-      formData.append("video", videoFile)
+      formData.append("video", result.url)
       formData.append("title", videoTitle)
       formData.append("description", videoDescription)
       formData.append("tags", videoTags)
