@@ -1,6 +1,6 @@
 "use client"
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom"
 import Monitoring from "./routers/monitoring"
 import ModernSidebar from "@/components/app-sidebar"
 import Biolink from "./routers/biolink"
@@ -15,66 +15,84 @@ import PricingPage from "./components/payments/pricing-page"
 import SchedulingPage from "./routers/scheduling"
 import UserProfilePage from "./pages/UserProfilePage"
 
+// This is the parent component that provides the BrowserRouter
 const AppWithParentRouter = () => {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  )
+}
+
+// This is the child component that implements the routing logic
+const AppRoutes = () => {
   const [sidebarHovered, setSidebarHovered] = useState(false)
+  const location = useLocation();
+  const isBioPage = location.pathname.startsWith("/bio/");
   const { hasVisitedBefore, setHasVisitedBefore, isAuthenticated } = useAuthStore()
+  
   if (!hasVisitedBefore && !isAuthenticated) {
     return (
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <LandingPage
-                onPress={() => {
-                  setHasVisitedBefore(true)
-                }}
-              />
-            }
-          />
-          <Route path="/bio/:username" element={<UserProfilePage />} />
-          <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <LandingPage
+              onPress={() => {
+                setHasVisitedBefore(true)
+              }}
+            />
+          }
+        />
+        <Route path="/bio/:username" element={<UserProfilePage />} />
+        <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     )
   }
 
   if (!isAuthenticated && hasVisitedBefore) {
     return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-          <Route path="/forgot-password" element={<ResetPasswordPage />} />
-          <Route path="/bio/:username" element={<UserProfilePage />} />
-
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+        <Route path="/forgot-password" element={<ResetPasswordPage />} />
+        <Route path="/bio/:username" element={<UserProfilePage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     )
   }
 
+  // Authenticated user routes
   return (
-    <BrowserRouter>
-      <div className="flex h-screen">
-        <div onMouseEnter={() => setSidebarHovered(true)} onMouseLeave={() => setSidebarHovered(false)}>
-          <ModernSidebar />
+    <>
+      {isBioPage ? (
+        <Routes>
+          <Route path="/bio/:username" element={<UserProfilePage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      ) : (
+        <div className="flex h-screen">
+          <div onMouseEnter={() => setSidebarHovered(true)} onMouseLeave={() => setSidebarHovered(false)}>
+            <ModernSidebar />
+          </div>
+          <main className={`flex-1 overflow-auto transition-all duration-300 ${sidebarHovered ? "ml-64" : "ml-20"}`}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/biolink" />} />
+              <Route path="/biolink/*" element={<Biolink />} />
+              <Route path="/monitoring/*" element={<Monitoring />} />
+              <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+              <Route path="/scheduling/*" element={<SchedulingPage/>} />
+              <Route path="/payments" element={<PricingPage/>}/>
+              <Route path="/bio/:username" element={<UserProfilePage />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </main>
         </div>
-        <main className={`flex-1 overflow-auto transition-all duration-300 ${sidebarHovered ? "ml-64" : "ml-20"}`}>
-          <Routes>
-            <Route path="/" element={<Navigate to={"/biolink"} />} />
-            <Route path="/biolink/*" element={<Biolink />} />
-            <Route path="/monitoring/*" element={<Monitoring />} />
-            <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-            <Route path="/scheduling/*" element={<SchedulingPage/>} />
-            <Route path="/payments" element={<PricingPage/>}/>
-            <Route path="/bio/:username" element={<UserProfilePage />} />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
+      )}
+    </>
   )
 }
 
 export default AppWithParentRouter
-

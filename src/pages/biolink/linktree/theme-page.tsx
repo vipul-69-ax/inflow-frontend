@@ -23,13 +23,17 @@ export default function ThemePage() {
 const {updateSettings} = useSettingsHook()
   const [activeTab, setActiveTab] = useState("themes")
   const [selectedTheme, setSelectedTheme] = useState(() => themeSettings.themeColor || "default")
-  const [buttonStyle, setButtonStyle] = useState(() => themeSettings.buttonStyle || "rounded")
+  //const [buttonStyle, setButtonStyle] = useState(() => themeSettings.buttonStyle || "rounded")
   const [buttonShadow, setButtonShadow] = useState(() => themeSettings.buttonShadow || false)
   const [customBgColor, setCustomBgColor] = useState(() => themeSettings.customBackground || "#9333ea")
   const [customTextColor, setCustomTextColor] = useState(() => themeSettings.customTextColor || "#ffffff")
   const [fontFamily, setFontFamily] = useState(() => themeSettings.fontFamily || "default")
   const [backgroundType, setBackgroundType] = useState(() => themeSettings.backgroundType || "solid")
   const [backgroundOpacity, setBackgroundOpacity] = useState(() => themeSettings.backgroundOpacity || 100)
+  const [buttonType,setButtonType] = useState(()=>themeSettings.buttonType || "fill")
+  const [buttonColor,setButtonColor] = useState(()=>themeSettings.buttonColor || "#373d6d")
+  const [buttonFontColor,setButtonFontColor] = useState(()=>themeSettings.buttonFontColor || "#2ec2d6")
+  const [buttonBorderCurve,setButtonBorderCurve] = useState(()=>themeSettings.buttonBorderCurve || "rounded-none")
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [showTextColorPicker, setShowTextColorPicker] = useState(false)
   const [selectButton, setSelectedButton] = useState("");
@@ -215,11 +219,15 @@ const {updateSettings} = useSettingsHook()
         themeColor: selectedTheme,
         customBackground: customBgColor,
         customTextColor: customTextColor,
-        buttonStyle: buttonStyle,
+        //buttonStyle: buttonStyle,
         buttonShadow: buttonShadow,
         fontFamily: fontFamily,
         backgroundType: backgroundType,
         backgroundOpacity: backgroundOpacity,
+        buttonType : buttonType,
+        buttonColor : buttonColor,
+        buttonFontColor : buttonFontColor,
+        buttonBorderCurve : buttonBorderCurve,
       })
     }, 100)
 
@@ -228,11 +236,15 @@ const {updateSettings} = useSettingsHook()
     selectedTheme,
     customBgColor,
     customTextColor,
-    buttonStyle,
+    //buttonStyle,
     buttonShadow,
     fontFamily,
     backgroundType,
     backgroundOpacity,
+    buttonType,
+    buttonColor,
+    buttonFontColor,
+    buttonBorderCurve,
     setThemeSettings,
   ])
 
@@ -264,6 +276,7 @@ const {updateSettings} = useSettingsHook()
   // Get background style for theme preview
 
   // Get animation class for theme preview
+  console.log("Font Family ki value hain:", useSettingsStore.getState().themeSettings.fontFamily)
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900 md:flex-row transition-colors duration-300">
@@ -434,7 +447,7 @@ const {updateSettings} = useSettingsHook()
                   <h2 className="mb-4 text-lg font-semibold dark:text-white">Font Style</h2>
                   <RadioGroup
                     value={fontFamily}
-                    onValueChange={setFontFamily}
+                    // onValueChange={setFontFamily}
                     className="grid gap-4 sm:grid-cols-2 md:grid-cols-3"
                   >
                     {fonts.map((font) => (
@@ -480,9 +493,10 @@ const {updateSettings} = useSettingsHook()
                     <ButtonEditor type="fill" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
                     <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Outline</h4>
                     <ButtonEditor type="outline" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
-                    <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Shadow</h4>
-                    <ButtonEditor type="shadow" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
-
+                    <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Hard Shadow</h4>
+                    <ButtonEditor type="hard" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
+                    <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Soft Shadow</h4>
+                    <ButtonEditor type="soft" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
 
                     {/*button colour */}
                     <h2 className="mr-2 mt-6 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Button Colour</h2>
@@ -553,7 +567,7 @@ const {updateSettings} = useSettingsHook()
                   <h2 className="mb-2 text-2xl font-semibold dark:text-white" style={{fontFamily:"Avenir LT Std"}}>Fonts</h2>
                     {/*font family*/}
                     <h2 className="mr-2 mt-4 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Font Family</h2>
-                    <FontEditor/>
+                    <FontEditor FontFamilyId={fontFamily} setFontFamilyId={setFontFamily}/>
                     {/*font colour */}                    
                     <h2 className="mr-2 mt-2 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Font Colour</h2>
                     <div className="flex flex-row mt-2">
