@@ -40,6 +40,13 @@ export default function YouTubeScheduler() {
   const [streamDetails, setStreamDetails] = useState<any>(null)
     const { uploadToS3, uploading } = useS3Upload()
 
+  useEffect(()=>{
+    if(uploading){
+      setAuthInProgress(true)
+    }else{
+      setAuthInProgress(false)
+    }
+  },[uploading])
 
   // Notification state
   const [notification, setNotification] = useState<{

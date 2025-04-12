@@ -18,7 +18,7 @@ export function useS3Upload() {
 
     try {
       // 1. Get signed URL from your backend
-      const res = await fetch('http://localhost:3000/api/scheduling/youtube/url', {
+      const res = await fetch('https://api.inflow.chat/api/scheduling/youtube/url', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filename: file.name, filetype: file.type }),
