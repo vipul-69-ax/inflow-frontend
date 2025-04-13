@@ -17,6 +17,7 @@ export default function DashboardPage() {
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [copied, setCopied] = useState(false)
 
+  
   // Get the current user's username - in a real app, this would come from your auth system
   const store = useSettingsStore()
 
@@ -49,7 +50,7 @@ export default function DashboardPage() {
       {/* This div creates proper spacing from the sidebar */}
       <div className="flex-1 p-4 md:p-8">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold dark:text-white transition-colors duration-300">My Linktree</h1>
+          <h1 className="text-2xl font-bold dark:text-white transition-colors duration-300">Inflow</h1>
           <div className="flex items-center gap-4">
             <Link
               to="/biolink/theme"

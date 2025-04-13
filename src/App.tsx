@@ -14,7 +14,6 @@ import VerifyEmailPage from "./pages/auth/email-verify"
 import PricingPage from "./components/payments/pricing-page"
 import SchedulingPage from "./routers/scheduling"
 import UserProfilePage from "./pages/UserProfilePage"
-import { TestPage } from "./test"
 
 const AppWithParentRouter = () => {
   const [sidebarHovered, setSidebarHovered] = useState(false)
@@ -57,6 +56,7 @@ const AppWithParentRouter = () => {
 
   return (
     <BrowserRouter>
+    
       <div className="flex h-screen">
         <div onMouseEnter={() => setSidebarHovered(true)} onMouseLeave={() => setSidebarHovered(false)}>
           <ModernSidebar />
@@ -70,7 +70,6 @@ const AppWithParentRouter = () => {
             <Route path="/scheduling/*" element={<SchedulingPage/>} />
             <Route path="/payments" element={<PricingPage/>}/>
             <Route path="/:username" element={<UserProfilePage />} />
-            <Route path="/test" element={<TestPage/>} />
           </Routes>
         </main>
       </div>
