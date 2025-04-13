@@ -25,11 +25,15 @@ type ThemeSettings = {
   themeColor: string
   customBackground?: string
   customTextColor?: string
-  buttonStyle?: string
+  //buttonStyle?: string
   buttonShadow?: boolean
   fontFamily?: string
   backgroundType?: string
   backgroundOpacity?: number
+  buttonType?: string,
+  buttonColor?:string,
+  buttonFontColor?:string,
+  buttonBorderCurve?:string,
 }
 
 type SettingsContextType = {

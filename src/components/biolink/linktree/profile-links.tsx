@@ -447,7 +447,7 @@ export function ProfileLinks() {
                       ) : null}
                     </div>
                     <p
-                      className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300 truncate max-w-[200px] md:max-w-[300px] cursor-pointer hover:text-purple-600 dark:hover:text-purple-400"
+                      className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300 truncate max-w-[100px] md:max-w-[100px] overflow-hidden cursor-pointer hover:text-purple-600 dark:hover:text-purple-400"
                       onClick={() => {
                         handleLinkClick(link.id as number)
                         window.open(link.url, "_blank", "noopener,noreferrer")
@@ -556,11 +556,11 @@ export function ProfileLinks() {
                             size="icon"
                             className="h-7 w-7"
                             onClick={() => {toggleLinkFavorite(link.id as number)
-updateRegularLinks(
-  regularLinks.map((l) =>
-    l.id === link.id ? { ...l, favorite: !l.favorite } : l
-  )
-)
+                              updateRegularLinks(
+                                regularLinks.map((l) =>
+                                  l.id === link.id ? { ...l, favorite: !l.favorite } : l
+                                )
+                              )
                             }}
                           >
                             <Star
@@ -602,6 +602,9 @@ updateRegularLinks(
                       </Tooltip>
                     </TooltipProvider>
 
+
+
+
                     <Button
                       variant="ghost"
                       className={`flex items-center h-7 px-2 rounded-full text-xs ${link.clicks ? "bg-purple-600 text-white hover:bg-purple-700" : ""}`}
@@ -613,6 +616,10 @@ updateRegularLinks(
                       <span>{link.clicks || 0} clicks</span>
                     </Button>
                   </div>
+
+
+
+
 
                   {/* Mobile dropdown for options */}
                   <div className="md:hidden">
@@ -652,13 +659,11 @@ updateRegularLinks(
                           <span>Share</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {toggleLinkFavorite(link.id as number)
-
-updateRegularLinks(
-  regularLinks.map((l) =>
-    l.id === link.id ? { ...l, favorite: !l.favorite } : l
-  )
-)
-
+                          updateRegularLinks(
+                            regularLinks.map((l) =>
+                              l.id === link.id ? { ...l, favorite: !l.favorite } : l
+                            )
+                          )
                         }}>
                           <Star className={`mr-2 h-4 w-4 ${link.favorite ? "text-yellow-400" : ""}`} />
                           <span>{link.favorite ? "Unfavorite" : "Favorite"}</span>
@@ -674,10 +679,13 @@ updateRegularLinks(
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => {deleteLink(link.id as number)
                           updateRegularLinks(regularLinks.filter((l) => l.id !== link.id))
-
                         }} className="text-red-600">
                           <Trash2 className="mr-2 h-4 w-4" />
                           <span>Delete</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setIsEditLinkOpen(true)} className="text-blue-400">
+                          <Pencil className="mr-2 h-4 w-4" />
+                          <span>Edit</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -693,8 +701,6 @@ updateRegularLinks(
                       size="icon"
                       onClick={() => {deleteLink(link.id as number)
                         updateRegularLinks(regularLinks.filter((l) => l.id !== link.id))
-
-
                       }}
                       className="h-7 w-7 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors duration-300"
                       aria-label="Delete link"

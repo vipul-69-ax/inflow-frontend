@@ -1,6 +1,6 @@
 "use client"
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom"
 import Monitoring from "./routers/monitoring"
 import ModernSidebar from "@/components/app-sidebar"
 import Biolink from "./routers/biolink"
@@ -16,12 +16,37 @@ import SchedulingPage from "./routers/scheduling"
 import UserProfilePage from "./pages/UserProfilePage"
 import { TestPage } from "./test"
 
+// This is the parent component that provides the BrowserRouter
 const AppWithParentRouter = () => {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  )
+}
+
+// This is the child component that implements the routing logic
+const AppRoutes = () => {
   const [sidebarHovered, setSidebarHovered] = useState(false)
+  const location = useLocation();
+  const path = location.pathname
+  //const isBioPage = location.pathname.startsWith("/bio/");
+  const isBioPage = !(
+    path === "/" ||
+    path === "" ||
+    path.startsWith("/verify-email") ||
+    path.startsWith("/register") ||
+    path.startsWith("/forgot-password") ||
+    path.startsWith("/biolink") ||
+    path.startsWith("/monitoring") ||
+    path.startsWith("/scheduling") ||
+    path.startsWith("/payments") ||
+    path.startsWith("/test")
+  )
   const { hasVisitedBefore, setHasVisitedBefore, isAuthenticated } = useAuthStore()
+  
   if (!hasVisitedBefore && !isAuthenticated) {
     return (
-      <BrowserRouter>
         <Routes>
           <Route
             path="/"
@@ -36,13 +61,12 @@ const AppWithParentRouter = () => {
           <Route path="/:username" element={<UserProfilePage />} />
           <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
         </Routes>
-      </BrowserRouter>
     )
   }
 
   if (!isAuthenticated && hasVisitedBefore) {
     return (
-      <BrowserRouter>
+      
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -51,12 +75,18 @@ const AppWithParentRouter = () => {
           <Route path="/:username" element={<UserProfilePage />} />
 
         </Routes>
-      </BrowserRouter>
     )
   }
 
+  // Authenticated user routes
   return (
-    <BrowserRouter>
+    <>
+      {isBioPage ? (
+        <Routes>
+          <Route path="/:username" element={<UserProfilePage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      ) : (
       <div className="flex h-screen">
         <div onMouseEnter={() => setSidebarHovered(true)} onMouseLeave={() => setSidebarHovered(false)}>
           <ModernSidebar />
@@ -74,9 +104,9 @@ const AppWithParentRouter = () => {
           </Routes>
         </main>
       </div>
-    </BrowserRouter>
+      )}
+    </>
   )
 }
 
 export default AppWithParentRouter
-

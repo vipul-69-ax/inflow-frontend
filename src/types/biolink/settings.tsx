@@ -20,12 +20,16 @@ export interface NotificationPreferences {
     themeColor: string
     customBackground?: string
     customTextColor?: string
-    buttonStyle?: string
+    //buttonStyle?: string
     buttonShadow?: boolean
     fontFamily?: string
     backgroundType?: string
     backgroundOpacity?: number
     themeSelected: string | number
+    buttonType?: string,
+    buttonColor?:string,
+    buttonFontColor?:string,
+    buttonBorderCurve?:string,
   }
   
   export interface UserSettings {

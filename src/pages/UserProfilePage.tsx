@@ -4,6 +4,8 @@
 import { useEffect, useState } from "react"
 import { AtSign, Facebook, Github, Instagram, Linkedin, Mail, Twitter, Youtube } from "lucide-react"
 import { api } from "@/hooks/api/auth/useAuth"
+import { MobilePreview } from "@/components/biolink/linktree/mobile-preview"
+import { useSettingsStore } from "@/storage/settings-store"
 
 
 
@@ -32,6 +34,7 @@ function adjustColor(hex: string, percent = -20): string {
 
 export default function UserProfilePage() {
   // Get username from URL
+  const { displayName, bio, profileImage, themeSettings } = useSettingsStore()
   const username = window.location.pathname.split("/").pop() || ""
 
   const [userData, setUserData] = useState<any>(null)
@@ -65,6 +68,7 @@ export default function UserProfilePage() {
   }
 
   useEffect(() => {
+   
     getData()
   }, [username])
 
@@ -105,70 +109,72 @@ export default function UserProfilePage() {
     }
 
     // Use the theme images for the backgrounds
-    switch (userData.settings.themeSettings?.themeColor) {
+    console.log(themeSettings.themeColor);
+    switch (themeSettings?.themeColor) {
       case "leafy":
         return {
-          background: "linear-gradient(135deg, #4CAF50, #8BC34A)",
+          //background: "linear-gradient(to bottom right, #f8fafc, #e2e8f0)",
+          background: "linear-gradient(to bottom right, #f5f7f5, #e5eae7 50%, #cfd9d6)",
         }
       case "funky":
         return {
-          background: "linear-gradient(135deg, #FF9800, #FF5722)",
+          background: "linear-gradient(to top right, #ec4899, #fdba74, #fef08a)",
         }
       case "starry":
         return {
-          background: "linear-gradient(135deg, #2196F3, #3F51B5)",
+          background: "linear-gradient(to bottom, #172554, #0f172a, #000000)",
         }
       case "pink-clouds":
         return {
-          background: "linear-gradient(135deg, #E91E63, #9C27B0)",
+          background: "linear-gradient(to bottom, #fbcfe8, #fce7f3, #fff1f2)",
         }
       case "teal-gradient":
         return {
-          background: "linear-gradient(135deg, #009688, #4DB6AC)",
+          background: "linear-gradient(to bottom, #22b8cf, #2ab6a7 50%, #20c997)",
         }
       case "mushroom-pattern":
         return {
-          background: "linear-gradient(135deg, #795548, #A1887F)",
+          background: "linear-gradient(to right, #fecdd3, #fde68a, #ffe4e6)",
         }
       case "noisy-gradient":
         return {
-          background: "linear-gradient(135deg, #8BC34A, #CDDC39)",
+          background: "linear-gradient(to bottom, #d1fac7, #ffd60a)",
         }
       case "vibrant-dots":
         return {
-          background: "linear-gradient(135deg, #673AB7, #3F51B5)",
+          background: "linear-gradient(to right, #e11d48, #ef4444, #f97316)",
         }
       case "blue-purple":
         return {
-          background: "linear-gradient(135deg, #2196F3, #9C27B0)",
+          background: "linear-gradient(to bottom right, #06b6d4, #3b82f6, #a855f7)",
         }
       case "olive-zen":
         return {
-          background: "linear-gradient(135deg, #808000, #556B2F)",
+          background: "linear-gradient(to bottom right, #dcfce7, #d1fae5)",
         }
       case "golden-royale":
         return {
-          background: "linear-gradient(135deg, #FFD700, #FFA500)",
+          background: "linear-gradient(135deg, #38bdf8, #fcd34d)",
         }
       case "lemon-zest":
         return {
-          background: "linear-gradient(135deg, #FFEB3B, #FFC107)",
+          background: "linear-gradient(to right, #fef9c3, #fef08a)",
         }
       case "tunnel":
         return {
-          background: "linear-gradient(135deg, #212121, #424242)",
+          background: " linear-gradient(to bottom, #1f2937, #030712)",
         }
       case "funky-carnival":
         return {
-          background: "linear-gradient(135deg, #FF4081, #7C4DFF)",
+          background: "linear-gradient(to bottom, #581c87, #6b21a8, #581c87)",
         }
       case "peach-fuzz":
         return {
-          background: "linear-gradient(135deg, #FFCCBC, #FFAB91)",
+          background: "linear-gradient(to right, #ffedd5, #fed7aa)",
         }
       case "neo-memphis":
         return {
-          background: "linear-gradient(135deg, #00BCD4, #18FFFF)",
+          background: " linear-gradient(to right, #2563eb, #4f46e5)",
         }
       default:
         return {
@@ -350,8 +356,9 @@ export default function UserProfilePage() {
         style={getBackgroundStyle()}
       >
         <div className="max-w-md mx-auto px-4">
-          {/* Profile Header */}
-          <div className="flex flex-col items-center mb-8">
+          <MobilePreview></MobilePreview>
+          {/*Profile Header*/}
+          {/* <div className="flex flex-col items-center mb-8">
             <div className="relative mb-4">
               <div className="h-28 w-28 rounded-full overflow-hidden bg-white/20 backdrop-blur-sm p-1">
               {userData.settings.profileImage ? (
@@ -391,10 +398,10 @@ export default function UserProfilePage() {
             <p className="text-center opacity-90 max-w-xs" style={getTextColor()}>
               {userData.settings.bio}
             </p>
-          </div>
+          </div> */}
 
           {/* Social Links */}
-          {activeSocialLinks.length > 0 && (
+          {/* {activeSocialLinks.length > 0 && (
             <div className="flex justify-center gap-3 mb-6">
               {activeSocialLinks.map((link) => (
                 <a
@@ -410,10 +417,10 @@ export default function UserProfilePage() {
                 </a>
               ))}
             </div>
-          )}
+          )} */}
 
           {/* Regular Links */}
-          <div className="space-y-3 mb-10">
+          {/* <div className="space-y-3 mb-10">
             {activeLinks.map((link) => (
               <a
                 key={link.id}
@@ -444,10 +451,10 @@ export default function UserProfilePage() {
                 <p className="opacity-70">No links have been added yet.</p>
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Footer */}
-          <div className="absolute bottom-5 left-0 right-0 flex justify-center">
+          {/* <div className="absolute bottom-5 left-0 right-0 flex justify-center">
             <div className="h-10 w-auto opacity-80 transition-opacity hover:opacity-100">
               <img
                 src="/images/logo/inflow-logo.png"
@@ -460,7 +467,7 @@ export default function UserProfilePage() {
                 }}
               />
             </div>
-          </div>
+          </div>  */}
         
         </div>
       </div>

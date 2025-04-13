@@ -11,6 +11,7 @@ type NotificationPreferences = {
   pushEarnings: boolean
 }
 
+
 type AppearancePreferences = {
   showLogo: boolean | undefined
   animations: boolean
@@ -22,11 +23,15 @@ type ThemeSettings = {
   themeColor: string
   customBackground?: string
   customTextColor?: string
-  buttonStyle?: string
+  //buttonStyle?: string
   buttonShadow?: boolean
   fontFamily?: string
   backgroundType?: string
   backgroundOpacity?: number
+  buttonType?: string,
+  buttonColor?:string,
+  buttonFontColor?:string,
+  buttonBorderCurve?:string,
 }
 
 type SettingsState = {
@@ -97,11 +102,15 @@ export const useSettingsStore = create<SettingsState>()(
         themeColor: "default",
         customBackground: "#9333ea",
         customTextColor: "#ffffff",
-        buttonStyle: "rounded",
+        //buttonStyle: "rounded",
         buttonShadow: false,
         fontFamily: "default",
         backgroundType: "solid",
         backgroundOpacity: 100,
+        buttonType : "fill",
+        buttonColor: "#373d6d",
+        buttonFontColor: "#2ec2d6",
+        buttonBorderCurve: "rounded-none",
       },
       notificationPreferences: {
         emailProfileViews: true,
@@ -217,11 +226,15 @@ export const useSettingsStore = create<SettingsState>()(
             themeColor: "default",
             customBackground: "#9333ea",
             customTextColor: "#ffffff",
-            buttonStyle: "rounded",
+            //buttonStyle: "rounded",
             buttonShadow: false,
             fontFamily: "default",
             backgroundType: "solid",
             backgroundOpacity: 100,
+            buttonType : "fill",
+            buttonColor: "#373d6d",
+            buttonFontColor: "#2ec2d6",
+            buttonBorderCurve: "rounded-none",
           },
           notificationPreferences: {
             emailProfileViews: true,
@@ -260,11 +273,15 @@ export const useSettingsStore = create<SettingsState>()(
               themeColor: "default",
               customBackground: "#9333ea",
               customTextColor: "#ffffff",
-              buttonStyle: "rounded",
+              //buttonStyle: "rounded",
               buttonShadow: false,
               fontFamily: "default",
               backgroundType: "solid",
               backgroundOpacity: 100,
+              buttonType : "fill",
+              buttonColor: "#373d6d",
+              buttonFontColor: "#2ec2d6",
+              buttonBorderCurve: "rounded-none",
             }),
             // Ensure profileLayout is a valid value
             profileLayout: (dbSettings.themeSettings?.profileLayout || "classic") as "classic" | "hero",
@@ -301,4 +318,3 @@ export const useSettingsStore = create<SettingsState>()(
     },
   ),
 )
-
