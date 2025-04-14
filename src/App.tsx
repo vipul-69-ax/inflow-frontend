@@ -30,8 +30,12 @@ const AppWithParentRouter = () => {
 // This is the child component that implements the routing logic
 const AppRoutes = () => {
   const [sidebarHovered, setSidebarHovered] = useState(false)
+<<<<<<< HEAD
   const [storesLoaded, setStoresLoaded] = useState(false)
   const location = useLocation()
+=======
+  const location = useLocation();
+>>>>>>> eaa1ac740fbd04aee6431a0dfe44c56c9d51a741
   const path = location.pathname
   //const isBioPage = location.pathname.startsWith("/bio/");
   const isBioPage = !(
@@ -47,6 +51,7 @@ const AppRoutes = () => {
     path.startsWith("/test")
   )
   const { hasVisitedBefore, setHasVisitedBefore, isAuthenticated } = useAuthStore()
+<<<<<<< HEAD
 
     const { fetchSettings } = useSettingsHook()
     const isPaid = useSettingsStore().is_paid
@@ -92,11 +97,31 @@ const AppRoutes = () => {
         <Route path="/:username" element={<UserProfilePage />} />
         <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
       </Routes>
+=======
+  
+  if (!hasVisitedBefore && !isAuthenticated) {
+    return (
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <LandingPage
+                onPress={() => {
+                  setHasVisitedBefore(true)
+                }}
+              />
+            }
+          />
+          <Route path="/:username" element={<UserProfilePage />} />
+          <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+        </Routes>
+>>>>>>> eaa1ac740fbd04aee6431a0dfe44c56c9d51a741
     )
   }
 
   if (!isAuthenticated && hasVisitedBefore) {
     return (
+<<<<<<< HEAD
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -104,11 +129,25 @@ const AppRoutes = () => {
         <Route path="/forgot-password" element={<ResetPasswordPage />} />
         <Route path="/:username" element={<UserProfilePage />} />
       </Routes>
+=======
+      
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+          <Route path="/forgot-password" element={<ResetPasswordPage />} />
+          <Route path="/:username" element={<UserProfilePage />} />
+
+        </Routes>
+>>>>>>> eaa1ac740fbd04aee6431a0dfe44c56c9d51a741
     )
   }
 
   // Authenticated user routes
+<<<<<<< HEAD
   if(storesLoaded){
+=======
+>>>>>>> eaa1ac740fbd04aee6431a0dfe44c56c9d51a741
   return (
     <>
       {isBioPage ? (
@@ -117,6 +156,7 @@ const AppRoutes = () => {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       ) : (
+<<<<<<< HEAD
         <div className="flex h-screen">
           <div onMouseEnter={() => setSidebarHovered(true)} onMouseLeave={() => setSidebarHovered(false)}>
             <ModernSidebar />
@@ -133,10 +173,33 @@ const AppRoutes = () => {
             </Routes>
           </main>
         </div>
+=======
+      <div className="flex h-screen">
+        <div onMouseEnter={() => setSidebarHovered(true)} onMouseLeave={() => setSidebarHovered(false)}>
+          <ModernSidebar />
+        </div>
+        <main className={`flex-1 overflow-auto transition-all duration-300 ${sidebarHovered ? "ml-64" : "ml-20"}`}>
+          <Routes>
+            <Route path="/" element={<Navigate to={"/biolink"} />} />
+            <Route path="/biolink/*" element={<Biolink />} />
+            <Route path="/monitoring/*" element={<Monitoring />} />
+            <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+            <Route path="/scheduling/*" element={<SchedulingPage/>} />
+            <Route path="/payments" element={<PricingPage/>}/>
+            <Route path="/:username" element={<UserProfilePage />} />
+            <Route path="/test" element={<TestPage/>} />
+          </Routes>
+        </main>
+      </div>
+>>>>>>> eaa1ac740fbd04aee6431a0dfe44c56c9d51a741
       )}
     </>
   )
 }
 }
 
+<<<<<<< HEAD
 export default AppWithParentRouter
+=======
+export default AppWithParentRouter
+>>>>>>> eaa1ac740fbd04aee6431a0dfe44c56c9d51a741
