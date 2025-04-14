@@ -413,7 +413,7 @@ export function ProfileLinks() {
         <div className="space-y-3">
           {visibleLinks.map((link) => {
             const scheduleStatus = getScheduleStatus(link)
-
+            console.log(link);
             return (
               <div
                 key={link.id}
@@ -435,7 +435,7 @@ export function ProfileLinks() {
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-medium dark:text-white transition-colors duration-300">{link.title}</h3>
+                      <h3 className="font-medium dark:text-white transition-colors duration-300 max-w-[100px] overflow-hidden">{link.title}</h3>
                       {link.scheduleStart || link.scheduleEnd ? (
                         <Badge
                           variant="outline"
@@ -545,9 +545,6 @@ export function ProfileLinks() {
                     </TooltipProvider>
 
 
-
-
-
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -574,10 +571,6 @@ export function ProfileLinks() {
                       </Tooltip>
                     </TooltipProvider>
 
-
-
-
-
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -602,9 +595,6 @@ export function ProfileLinks() {
                       </Tooltip>
                     </TooltipProvider>
 
-
-
-
                     <Button
                       variant="ghost"
                       className={`flex items-center h-7 px-2 rounded-full text-xs ${link.clicks ? "bg-purple-600 text-white hover:bg-purple-700" : ""}`}
@@ -616,10 +606,6 @@ export function ProfileLinks() {
                       <span>{link.clicks || 0} clicks</span>
                     </Button>
                   </div>
-
-
-
-
 
                   {/* Mobile dropdown for options */}
                   <div className="md:hidden">
@@ -923,4 +909,3 @@ export function ProfileLinks() {
     </div>
   )
 }
-

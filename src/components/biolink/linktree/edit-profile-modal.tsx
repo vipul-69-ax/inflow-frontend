@@ -330,4 +330,3 @@ export function EditButton({ onClick, className = "" }: { onClick: () => void; c
     </button>
   )
 }
-

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { useSettingsStore } from "@/storage/settings-store"
 import { useLinksStore } from "@/storage/links-store"
 import { AtSign, Facebook, Github, Instagram, Linkedin, Mail, Twitter, Youtube } from "lucide-react"
+import ButtonToShow from "./preview-buttons"
 
 interface MobilePreviewProps {
   className?: string
@@ -139,7 +140,8 @@ export function MobilePreview({ className }: MobilePreviewProps) {
 
   // Enhance text color function to better match each theme
   const getTextColor = () => {
-    if (themeSettings?.customTextColor && themeSettings?.themeColor === "custom") {
+    //console.log(themeSettings.customTextColor);
+    if (themeSettings.customTextColor) {
       return { color: themeSettings.customTextColor }
     }
 
@@ -185,6 +187,46 @@ export function MobilePreview({ className }: MobilePreviewProps) {
 
 
 
+  const getButtonColor = () => {
+    //console.log(themeSettings.customTextColor);
+    if (themeSettings.buttonColor) {
+      return themeSettings.buttonColor
+    }
+    else{
+      return "#ffffff"
+    }
+  }
+  
+
+  const getButtonTextColor = () => {
+    //console.log(themeSettings.customTextColor);
+    if (themeSettings.buttonFontColor) {
+      return themeSettings.buttonFontColor
+    }
+    else{
+      return "#ffffff"
+    }
+  }
+
+  const getButtonBorderCurve = () => {
+    //console.log(themeSettings.customTextColor);
+    if (themeSettings.buttonBorderCurve) {
+      return themeSettings.buttonBorderCurve
+    }
+    else{
+      return "rounded-full"
+    }
+  }
+
+  const getButtonType = () => {
+    //console.log(themeSettings.customTextColor);
+    if (themeSettings.buttonType) {
+      return themeSettings.buttonType
+    }
+    else{
+      return "transparent"
+    }
+  }
 
 
 
@@ -247,18 +289,6 @@ export function MobilePreview({ className }: MobilePreviewProps) {
 
   // Get font family based on theme settings
   const getFontFamily = () => {
-    // if (!themeSettings?.fontFamily || themeSettings.fontFamily === "default") {
-    //   return {}
-    // }
-
-    // const fonts = {
-    //   serif: "font-serif",
-    //   mono: "font-mono",
-    //   rounded: "font-sans",
-    //   display: "font-serif",
-    // }
-
-    // return fonts[themeSettings.fontFamily as keyof typeof fonts] || ""
 
     if (!themeSettings?.fontFamily || themeSettings.fontFamily === "default") {
       return {}
@@ -267,6 +297,16 @@ export function MobilePreview({ className }: MobilePreviewProps) {
     return {
       fontFamily: `"${themeSettings.fontFamily}", sans-serif`
     }
+  }
+
+
+  const getFont = () => {
+
+    if (!themeSettings?.fontFamily || themeSettings.fontFamily === "default") {
+      return "default"
+    }
+  
+    return themeSettings.fontFamily
   }
 
   // Get background opacity
@@ -463,40 +503,38 @@ export function MobilePreview({ className }: MobilePreviewProps) {
               </div>
             )}
 
-
-
-
             {/*button component*/}
             {/* Links - Only show user-added ones */}
-            <div className={getLinkContainerStyle()}>
+            <div className="flex flex-col gap-5">
               {regularLinks
                 .filter((link) => link.active)
                 .map((link) => (
-
-
                   
                   <a
                     key={link.id}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={cn(
-                      "flex w-full items-center justify-center py-3 px-4 text-sm font-medium",
-                      getButtonStyle(),
-                    )}
-                    style={getTextColor()}
+                    className="flex w-full items-center justify-center py-3 px-4"
                   >
-                    {link.thumbnail && (
-                      <div className="h-5 w-5 mr-2 rounded-sm overflow-hidden relative flex-shrink-0">
-                        <img src={link.thumbnail || "/placeholder.svg"} alt="" className="h-full w-full object-cover" />
-                      </div>
-                    )}
-                    <span className="truncate">{link.title}</span>
+                    <ButtonToShow
+                      backgroundColor={getButtonColor()}
+                      textColor={getButtonTextColor()}
+                      borderRadiusClass={getButtonBorderCurve()}
+                      buttonType={getButtonType()}
+                      title={link.title}
+                      fontFamily={getFont()}
+                      thumbnail={
+                          <img
+                            src={link.thumbnail || "/placeholder.svg"}
+                            alt=""
+                            className="h-8 w-8 mr-2 rounded-sm overflow-hidden relative flex-shrink-0"
+                          />
+                      }
+                    />
                   </a>
+
                 ))}
-
-
-
 
               {regularLinks.length === 0 && (
                 <div
@@ -510,11 +548,6 @@ export function MobilePreview({ className }: MobilePreviewProps) {
               )}
             </div>
           </div>
-
-
-
-
-
 
           {/* Company Logo - Always visible */}
           <div className="absolute bottom-5 left-0 right-0 flex justify-center">

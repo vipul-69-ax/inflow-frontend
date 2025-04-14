@@ -1,6 +1,6 @@
 "use client"
 
-function ButtonEditor({ type, selectedStyleId, setSelectedStyleId }) {
+function ButtonEditor({ type, selectedStyleId, setSelectedStyleId, selectedButtontype, setSelectedButtontype, selectedButtonborder, setSelectedButtonborder }) {
   const buttonNewStyles = [
     { id: "fill-square", bg_color: "black", text_color: "black", border_color: "black", border_radius: "rounded-none" },
     { id: "fill-rounded", bg_color: "black", text_color: "black", border_color: "black", border_radius: "rounded-lg" },
@@ -81,7 +81,11 @@ function ButtonEditor({ type, selectedStyleId, setSelectedStyleId }) {
             className={`relative cursor-pointer rounded-lg border-2 p-4 transition-all ${
               selectedStyleId === style.id ? "border-purple-600" : "border-gray-200 dark:border-gray-700"
             }`}
-            onClick={() => setSelectedStyleId(style.id)}
+            onClick={() => { 
+              setSelectedStyleId(style.id)
+              setSelectedButtontype(style.id)
+              setSelectedButtonborder(style.border_radius)
+            }}
           >
             {selectedStyleId === style.id && (
               <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-purple-600 text-white z-10">
@@ -118,7 +122,11 @@ function ButtonEditor({ type, selectedStyleId, setSelectedStyleId }) {
             className={`relative cursor-pointer rounded-lg border-2 p-4 transition-all ${
               selectedStyleId === style.id ? "border-purple-600" : "border-gray-200 dark:border-gray-700"
             }`}
-            onClick={() => setSelectedStyleId(style.id)}
+            onClick={() => {
+              setSelectedStyleId(style.id)
+              setSelectedButtontype(style.id)
+              setSelectedButtonborder(style.border_radius)
+            }}
           >
             {selectedStyleId === style.id && (
               <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-purple-600 text-white z-10">
@@ -159,7 +167,11 @@ function ButtonEditor({ type, selectedStyleId, setSelectedStyleId }) {
             }`}
             style={{ backgroundColor: "white" }}
           >
-            <div className={`relative p-4 cursor-pointer`} onClick={() => setSelectedStyleId(style.id)}>
+            <div className={`relative p-4 cursor-pointer`} onClick={() => {
+              setSelectedStyleId(style.id)
+              setSelectedButtontype(style.id)
+              setSelectedButtonborder(style.border_radius)
+            }}>
               {selectedStyleId === style.id && (
                 <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-purple-600 text-white">
                   <svg
