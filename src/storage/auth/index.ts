@@ -60,7 +60,8 @@ export const useAuthStore = create<AuthStore>()(
       logout: (): void => {
         set({ 
           isAuthenticated: false,
-          userId: null
+          userId: null,
+          hasVisitedBefore:false
         })
         localStorage.removeItem("accessToken")
       },

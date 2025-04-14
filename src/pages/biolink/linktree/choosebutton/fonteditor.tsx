@@ -20,7 +20,7 @@ const fontList = [
   "Allerta Stencil"
 ]
 
-export default function FontSelectorOverlay() {
+export default function FontSelectorOverlay({fontFamilyId, setFontFamilyId}) {
   const [open, setOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [font, setFont] = useState("Lobster")
@@ -91,7 +91,10 @@ export default function FontSelectorOverlay() {
                       key={index}
                       className={`px-4 py-2 flex items-center justify-between hover:bg-muted cursor-pointer`}
                       style={{ fontFamily: f }}
-                      onClick={() => setFont(f)}
+                      onClick={() =>{ 
+                        setFont(f)
+                        setFontFamilyId(f)
+                      }}
                     >
                       <span>{f}</span>
                       {font === f && <Check className="h-4 w-4 text-green-500" />}

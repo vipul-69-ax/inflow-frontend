@@ -57,7 +57,6 @@ export function useInitializeSettingsFromBackend() {
   useEffect(() => {
     const init = async () => {
       const settings = await fetchSettings()
-      
       if (settings) {
         useSettingsStore.getState().initializeFromDb(settings)
       }

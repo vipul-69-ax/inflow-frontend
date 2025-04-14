@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowLeft, Share2 } from "lucide-react"
+import { ArrowLeft, Lock, Share2 } from "lucide-react"
 import { MobilePreview } from "@/components/biolink/linktree/mobile-preview"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -16,6 +16,7 @@ import { useSettingsStore } from "@/storage/settings-store"
 import { useSettingsHook } from "@/hooks/api/biolink/useSettings"
 import ButtonEditor from "@/pages/biolink/linktree/choosebutton/button"
 import FontEditor from "@/pages/biolink/linktree/choosebutton/fonteditor"
+import { toast } from "sonner"
 
 export default function ThemePage() {
   const { themeSettings, setThemeSettings, appearancePreferences, setAppearancePreference } =
@@ -23,16 +24,21 @@ export default function ThemePage() {
 const {updateSettings} = useSettingsHook()
   const [activeTab, setActiveTab] = useState("themes")
   const [selectedTheme, setSelectedTheme] = useState(() => themeSettings.themeColor || "default")
-  const [buttonStyle, setButtonStyle] = useState(() => themeSettings.buttonStyle || "rounded")
+  //const [buttonStyle, setButtonStyle] = useState(() => themeSettings.buttonStyle || "rounded")
   const [buttonShadow, setButtonShadow] = useState(() => themeSettings.buttonShadow || false)
   const [customBgColor, setCustomBgColor] = useState(() => themeSettings.customBackground || "#9333ea")
   const [customTextColor, setCustomTextColor] = useState(() => themeSettings.customTextColor || "#ffffff")
   const [fontFamily, setFontFamily] = useState(() => themeSettings.fontFamily || "default")
   const [backgroundType, setBackgroundType] = useState(() => themeSettings.backgroundType || "solid")
   const [backgroundOpacity, setBackgroundOpacity] = useState(() => themeSettings.backgroundOpacity || 100)
+  const [buttonType,setButtonType] = useState(()=>themeSettings.buttonType || "fill")
+  const [buttonColor,setButtonColor] = useState(()=>themeSettings.buttonColor || "#373d6d")
+  const [buttonFontColor,setButtonFontColor] = useState(()=>themeSettings.buttonFontColor || "#2ec2d6")
+  const [buttonBorderCurve,setButtonBorderCurve] = useState(()=>themeSettings.buttonBorderCurve || "rounded-none")
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [showTextColorPicker, setShowTextColorPicker] = useState(false)
   const [selectButton, setSelectedButton] = useState("");
+  const is_paid = useSettingsStore().is_paid
 
   // Available themes with more aesthetic options
   const themes = [
@@ -41,6 +47,7 @@ const {updateSettings} = useSettingsHook()
       name: "Leafy",
       image: "/images/themes/leafy.jpg",
       color: "url('/images/themes/leafy.jpg')",
+      premium:true,
       textColor: "#2c3e50",
       description: "Minimalist design with elegant leaf illustrations",
       buttonStyle: "bg-[#2c3e50]/20 hover:bg-[#2c3e50]/30 text-[#2c3e50] border border-[#2c3e50]/30",
@@ -215,11 +222,15 @@ const {updateSettings} = useSettingsHook()
         themeColor: selectedTheme,
         customBackground: customBgColor,
         customTextColor: customTextColor,
-        buttonStyle: buttonStyle,
+        //buttonStyle: buttonStyle,
         buttonShadow: buttonShadow,
         fontFamily: fontFamily,
         backgroundType: backgroundType,
         backgroundOpacity: backgroundOpacity,
+        buttonType : buttonType,
+        buttonColor : buttonColor,
+        buttonFontColor : buttonFontColor,
+        buttonBorderCurve : buttonBorderCurve,
       })
     }, 100)
 
@@ -228,17 +239,26 @@ const {updateSettings} = useSettingsHook()
     selectedTheme,
     customBgColor,
     customTextColor,
-    buttonStyle,
+    //buttonStyle,
     buttonShadow,
     fontFamily,
     backgroundType,
     backgroundOpacity,
+    buttonType,
+    buttonColor,
+    buttonFontColor,
+    buttonBorderCurve,
     setThemeSettings,
   ])
 
   // Update the theme selection to provide immediate visual feedback
   // Enhance the theme selection handler to update the preview immediately
   const handleThemeSelect = (themeId: string) => {
+    const is_premium = themes.find(i=>i.id==themeId)?.premium
+    if(is_premium && !is_paid){
+      toast("Only avaibable in guru or pro plan")
+      return
+    }
     setSelectedTheme(themeId)
 
     // If selecting a predefined theme, update background type accordingly
@@ -264,6 +284,7 @@ const {updateSettings} = useSettingsHook()
   // Get background style for theme preview
 
   // Get animation class for theme preview
+  console.log("Font Family ki value hain:", useSettingsStore.getState().themeSettings.fontFamily)
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900 md:flex-row transition-colors duration-300">
@@ -288,7 +309,13 @@ const {updateSettings} = useSettingsHook()
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="col-span-2 space-y-8">
-            <Tabs defaultValue="themes" value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs defaultValue="themes" value={activeTab} onValueChange={(t)=>{
+              if(!is_paid && t =="buttons"){
+                toast("Buttons can be customized in pro or guru plan")
+                return
+              }
+              setActiveTab(t)
+            }} className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="themes">Themes</TabsTrigger>
                 <TabsTrigger value="buttons">Buttons</TabsTrigger>
@@ -336,7 +363,7 @@ const {updateSettings} = useSettingsHook()
                             />
                           </div>
                           <div className="bg-white dark:bg-gray-800 p-2 text-center">
-                            <p className="text-xs font-medium">{theme.name}</p>
+                            <p className="text-xs font-medium">{theme.name} {theme.premium&&<Lock className="h-5 w-5"/>}</p>
                           </div>
                         </div>
                       </div>
@@ -434,7 +461,7 @@ const {updateSettings} = useSettingsHook()
                   <h2 className="mb-4 text-lg font-semibold dark:text-white">Font Style</h2>
                   <RadioGroup
                     value={fontFamily}
-                    onValueChange={setFontFamily}
+                    // onValueChange={setFontFamily}
                     className="grid gap-4 sm:grid-cols-2 md:grid-cols-3"
                   >
                     {fonts.map((font) => (
@@ -480,9 +507,10 @@ const {updateSettings} = useSettingsHook()
                     <ButtonEditor type="fill" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
                     <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Outline</h4>
                     <ButtonEditor type="outline" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
-                    <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Shadow</h4>
-                    <ButtonEditor type="shadow" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
-
+                    <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Hard Shadow</h4>
+                    <ButtonEditor type="hard" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
+                    <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Soft Shadow</h4>
+                    <ButtonEditor type="soft" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
 
                     {/*button colour */}
                     <h2 className="mr-2 mt-6 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Button Colour</h2>
@@ -553,7 +581,7 @@ const {updateSettings} = useSettingsHook()
                   <h2 className="mb-2 text-2xl font-semibold dark:text-white" style={{fontFamily:"Avenir LT Std"}}>Fonts</h2>
                     {/*font family*/}
                     <h2 className="mr-2 mt-4 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Font Family</h2>
-                    <FontEditor/>
+                    <FontEditor FontFamilyId={fontFamily} setFontFamilyId={setFontFamily}/>
                     {/*font colour */}                    
                     <h2 className="mr-2 mt-2 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Font Colour</h2>
                     <div className="flex flex-row mt-2">

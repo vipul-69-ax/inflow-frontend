@@ -20,6 +20,8 @@ import {
   useRefreshYoutubeData,
   useRemoveYoutubeUser,
 } from "@/hooks/monitoring/useYoutubeApi"
+import { useSettingsStore } from "@/storage/settings-store"
+import { toast } from "sonner"
 
 export default function YoutubeDashboard() {
   const [newUsername, setNewUsername] = useState("")
@@ -53,10 +55,15 @@ export default function YoutubeDashboard() {
   // Remove a user
   const { removeUser, loading: removingUser, success } = useRemoveYoutubeUser()
 
+      const is_paid = useSettingsStore().is_paid
+  
   // Handle adding a new user
   const handleAddUser = async () => {
-    if(monitoredUsers.length>=5){
-      alert("You can only monitor 5 accounts at a time.")
+    const limit = is_paid?1:5
+
+    if(monitoredUsers.length>=limit){
+      toast(`You can only monitor ${limit} accounts at a time.`)
+
       return
     }
     if (!newUsername.trim()) return;

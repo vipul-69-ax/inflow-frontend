@@ -1,0 +1,22 @@
+{
+    "title": "Inflow",
+    "theme": "Tema",
+    "share": "Compartir",
+    "analytics": "Analíticas",
+    "shareDialog": {
+      "title": "Comparte tu Inflow",
+      "description": "Cualquiera con este enlace podrá ver tu perfil de Inflow.",
+      "copyButton": "Copiar",
+      "copiedButton": "¡Copiado!",
+      "shareOn": {
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "email": "Correo"
+      },
+      "emailBody": "Este es mi perfil de Linktree:"
+    },
+    "toast": {
+      "linkCopied": "Enlace copiado"
+    }
+  }
+  

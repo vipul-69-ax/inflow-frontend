@@ -2,7 +2,6 @@
 "use client"
 
 import { useState } from "react"
-import { useLinks } from "@/context/biolink/links-context"
 import { Button } from "@/components/ui/button"
 import { LinkDialog } from "@/components/biolink/linktree/link-dialog"
 import { ThumbnailUploadDialog } from "@/components/biolink/linktree/thumbnail-upload-dialog"
@@ -43,6 +42,8 @@ import { ScheduleDialog } from "@/components/biolink/linktree/schedule-dialog"
 // import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
 import { useLinksStore } from "@/storage/links-store"
 import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
+import { useSettingsStore } from "@/storage/settings-store"
+import { toast } from "sonner"
 
 export function ProfileLinks() {
   const [isAddLinkOpen, setIsAddLinkOpen] = useState(false)
@@ -220,8 +221,13 @@ export function ProfileLinks() {
     selectedLinkForAnalytics !== null ? regularLinks.find((link) => link.id === selectedLinkForAnalytics) : null
 
   const analyticsData = generateAnalyticsData(selectedLinkForAnalytics)
+  const is_paid = useSettingsStore().is_paid
 
   const openScheduleDialog = (linkId: number) => {
+    if(!is_paid){
+      toast("You can schedule links only in pro or guru plan")
+      return
+    }
     const link = regularLinks.find((l) => l.id === linkId)
     if (link) {
       setActiveLinkForSchedule(linkId)
@@ -447,7 +453,7 @@ export function ProfileLinks() {
                       ) : null}
                     </div>
                     <p
-                      className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300 truncate max-w-[200px] md:max-w-[300px] cursor-pointer hover:text-purple-600 dark:hover:text-purple-400"
+                      className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300 truncate max-w-[100px] md:max-w-[100px] overflow-hidden cursor-pointer hover:text-purple-600 dark:hover:text-purple-400"
                       onClick={() => {
                         handleLinkClick(link.id as number)
                         window.open(link.url, "_blank", "noopener,noreferrer")
@@ -556,11 +562,11 @@ export function ProfileLinks() {
                             size="icon"
                             className="h-7 w-7"
                             onClick={() => {toggleLinkFavorite(link.id as number)
-updateRegularLinks(
-  regularLinks.map((l) =>
-    l.id === link.id ? { ...l, favorite: !l.favorite } : l
-  )
-)
+                              updateRegularLinks(
+                                regularLinks.map((l) =>
+                                  l.id === link.id ? { ...l, favorite: !l.favorite } : l
+                                )
+                              )
                             }}
                           >
                             <Star
@@ -602,6 +608,9 @@ updateRegularLinks(
                       </Tooltip>
                     </TooltipProvider>
 
+
+
+
                     <Button
                       variant="ghost"
                       className={`flex items-center h-7 px-2 rounded-full text-xs ${link.clicks ? "bg-purple-600 text-white hover:bg-purple-700" : ""}`}
@@ -613,6 +622,10 @@ updateRegularLinks(
                       <span>{link.clicks || 0} clicks</span>
                     </Button>
                   </div>
+
+
+
+
 
                   {/* Mobile dropdown for options */}
                   <div className="md:hidden">
@@ -652,13 +665,11 @@ updateRegularLinks(
                           <span>Share</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {toggleLinkFavorite(link.id as number)
-
-updateRegularLinks(
-  regularLinks.map((l) =>
-    l.id === link.id ? { ...l, favorite: !l.favorite } : l
-  )
-)
-
+                          updateRegularLinks(
+                            regularLinks.map((l) =>
+                              l.id === link.id ? { ...l, favorite: !l.favorite } : l
+                            )
+                          )
                         }}>
                           <Star className={`mr-2 h-4 w-4 ${link.favorite ? "text-yellow-400" : ""}`} />
                           <span>{link.favorite ? "Unfavorite" : "Favorite"}</span>
@@ -674,10 +685,13 @@ updateRegularLinks(
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => {deleteLink(link.id as number)
                           updateRegularLinks(regularLinks.filter((l) => l.id !== link.id))
-
                         }} className="text-red-600">
                           <Trash2 className="mr-2 h-4 w-4" />
                           <span>Delete</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setIsEditLinkOpen(true)} className="text-blue-400">
+                          <Pencil className="mr-2 h-4 w-4" />
+                          <span>Edit</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -693,8 +707,6 @@ updateRegularLinks(
                       size="icon"
                       onClick={() => {deleteLink(link.id as number)
                         updateRegularLinks(regularLinks.filter((l) => l.id !== link.id))
-
-
                       }}
                       className="h-7 w-7 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors duration-300"
                       aria-label="Delete link"

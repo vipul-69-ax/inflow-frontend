@@ -60,8 +60,7 @@ export function ProfileCard() {
       </div>
 
       <EditProfileModal isOpen={isEditModalOpen} onOpenChange={setIsEditModalOpen} onSave={()=>{
-       updateSettings(useSettingsStore.getState())
-
+          updateSettings(useSettingsStore.getState())
       }}  />
     </div>
   )

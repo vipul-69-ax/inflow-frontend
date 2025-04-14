@@ -13,7 +13,7 @@ interface MobilePreviewProps {
 export function MobilePreview({ className }: MobilePreviewProps) {
   const { displayName, bio, profileImage, themeSettings } = useSettingsStore()
   const { socialLinks, regularLinks } = useLinksStore()
-  
+  console.log("themeSettings", themeSettings)
   // Helper function to adjust color brightness
   const adjustColor = (hex: string): string => {
     return hex // Simplified for this example
@@ -247,18 +247,26 @@ export function MobilePreview({ className }: MobilePreviewProps) {
 
   // Get font family based on theme settings
   const getFontFamily = () => {
+    // if (!themeSettings?.fontFamily || themeSettings.fontFamily === "default") {
+    //   return {}
+    // }
+
+    // const fonts = {
+    //   serif: "font-serif",
+    //   mono: "font-mono",
+    //   rounded: "font-sans",
+    //   display: "font-serif",
+    // }
+
+    // return fonts[themeSettings.fontFamily as keyof typeof fonts] || ""
+
     if (!themeSettings?.fontFamily || themeSettings.fontFamily === "default") {
       return {}
     }
-
-    const fonts = {
-      serif: "font-serif",
-      mono: "font-mono",
-      rounded: "font-sans",
-      display: "font-serif",
+  
+    return {
+      fontFamily: `"${themeSettings.fontFamily}", sans-serif`
     }
-
-    return fonts[themeSettings.fontFamily as keyof typeof fonts] || ""
   }
 
   // Get background opacity
@@ -397,6 +405,9 @@ export function MobilePreview({ className }: MobilePreviewProps) {
   // Update the JSX to use these enhanced styling functions
   return (
     <div className={cn("flex flex-col items-center", className)}>
+      <div>
+        {useSettingsStore().is_paid} is paid
+      </div>
       <div className="relative w-full max-w-[280px] overflow-hidden rounded-[40px] border-[8px] border-gray-800 bg-white shadow-xl">
         {/* Notch */}
         <div className="absolute left-1/2 top-0 h-6 w-32 -translate-x-1/2 rounded-b-xl bg-gray-800"></div>
@@ -407,7 +418,7 @@ export function MobilePreview({ className }: MobilePreviewProps) {
           style={getBackgroundStyle()}
         >
           {/* Content */}
-          <div className={cn("flex h-full flex-col items-center px-4 pt-12 pb-6", getFontFamily())}>
+          <div className={cn("flex h-full flex-col items-center px-4 pt-12 pb-6")} style={getFontFamily()}>
             {/* Profile */}
             <div className="mb-4 flex flex-col items-center">
               <div className="mb-3 flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-white/30 to-white/10 text-2xl font-bold backdrop-blur-sm">
@@ -455,11 +466,18 @@ export function MobilePreview({ className }: MobilePreviewProps) {
               </div>
             )}
 
+
+
+
+            {/*button component*/}
             {/* Links - Only show user-added ones */}
             <div className={getLinkContainerStyle()}>
               {regularLinks
                 .filter((link) => link.active)
                 .map((link) => (
+
+
+                  
                   <a
                     key={link.id}
                     href={link.url}
@@ -480,6 +498,9 @@ export function MobilePreview({ className }: MobilePreviewProps) {
                   </a>
                 ))}
 
+
+
+
               {regularLinks.length === 0 && (
                 <div
                   className={cn(
@@ -492,6 +513,12 @@ export function MobilePreview({ className }: MobilePreviewProps) {
               )}
             </div>
           </div>
+
+
+
+
+
+
           {/* Company Logo - Always visible */}
           <div className="absolute bottom-5 left-0 right-0 flex justify-center">
             <div className="h-10 w-auto opacity-80 transition-opacity hover:opacity-100">
