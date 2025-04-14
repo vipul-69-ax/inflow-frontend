@@ -53,8 +53,7 @@ export function useSettingsHook() {
       if (!isAuthenticated || !userId) {
         throw new Error("User not authenticated")
       }
-
-
+      
       setIsLoading(true)
       setError(null)
 

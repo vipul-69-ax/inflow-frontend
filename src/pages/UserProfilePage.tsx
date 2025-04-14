@@ -4,8 +4,8 @@
 import { useEffect, useState } from "react"
 import { AtSign, Facebook, Github, Instagram, Linkedin, Mail, Twitter, Youtube } from "lucide-react"
 import { api } from "@/hooks/api/auth/useAuth"
-import { MobilePreview } from "@/components/biolink/linktree/mobile-preview"
 import { useSettingsStore } from "@/storage/settings-store"
+import ButtonToShow from "@/components/biolink/linktree/preview-buttons"
 
 
 
@@ -42,13 +42,17 @@ export default function UserProfilePage() {
   const [activeSocialLinks, setActiveSocialLinks] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [gfg, setSettings] = useState<any>(null)
+  //const socialLinks;
+
 
   const getData = async () => {
     try {
       setLoading(true)
       const res = await api.post("/getProfile", { username })
       setUserData(res.data)
-        console.log(res.data)
+      console.log(res.data)
+      //socialLinks
       // Filter active links
       if (res.data?.regularLinks) {
         setActiveLinks(res.data.regularLinks.filter((link: any) => link.active))
@@ -57,6 +61,11 @@ export default function UserProfilePage() {
       // Filter active social links
       if (res.data?.socialLinks) {
         setActiveSocialLinks(res.data.socialLinks.filter((link: any) => link.active))
+      }
+
+      if(res.data?.settings) {
+        setSettings(res.data.settings)
+        console.log(gfg);
       }
 
       setLoading(false)
@@ -68,7 +77,6 @@ export default function UserProfilePage() {
   }
 
   useEffect(() => {
-   
     getData()
   }, [username])
 
@@ -96,6 +104,127 @@ export default function UserProfilePage() {
     )
   }
 
+
+
+  const getBackgroundType = () => {
+    // If using custom theme from theme settings
+    if (themeSettings?.themeColor === "custom" && themeSettings?.customBackground) {
+      if (themeSettings.backgroundType === "gradient") {
+        return {
+          background: `linear-gradient(135deg, ${themeSettings.customBackground}, ${adjustColor(themeSettings.customBackground)})`,
+        }
+      }
+      return { backgroundColor: themeSettings.customBackground }
+    }
+
+    // Use the theme images for the backgrounds
+    switch (gfg.themeSettings?.themeColor) {
+      case "leafy":
+        return {
+          backgroundImage: "url('/images/themes/leafy.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "funky":
+        return {
+          backgroundImage: "url('/images/themes/funky.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "starry":
+        return {
+          backgroundImage: "url('/images/themes/starry.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "pink-clouds":
+        return {
+          backgroundImage: "url('/images/themes/pink-clouds.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "teal-gradient":
+        return {
+          backgroundImage: "url('/images/themes/teal-gradient.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "mushroom-pattern":
+        return {
+          backgroundImage: "url('/images/themes/mushroom-pattern.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "noisy-gradient":
+        return {
+          backgroundImage: "url('/images/themes/noisy-gradient.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "vibrant-dots":
+        return {
+          backgroundImage: "url('/images/themes/vibrant-dots.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "blue-purple":
+        return {
+          backgroundImage: "url('/images/themes/blue-purple.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      // New themes
+      case "olive-zen":
+        return {
+          backgroundImage: "url('/images/themes/olive-zen.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "golden-royale":
+        return {
+          backgroundImage: "url('/images/themes/golden-royale.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "lemon-zest":
+        return {
+          backgroundImage: "url('/images/themes/lemon-zest.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "tunnel":
+        return {
+          backgroundImage: "url('/images/themes/tunnel.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "funky-carnival":
+        return {
+          backgroundImage: "url('/images/themes/funky-carnival.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "peach-fuzz":
+        return {
+          backgroundImage: "url('/images/themes/peach-fuzz.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      case "neo-memphis":
+        return {
+          backgroundImage: "url('/images/themes/neo-memphis.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      default:
+        return {
+          background: "linear-gradient(135deg, #9333ea, #e11d48)",
+        }
+    }
+  }
+
+
+
   // Get background style based on theme settings
   const getBackgroundStyle = () => {
     // If using custom theme from theme settings
@@ -109,8 +238,8 @@ export default function UserProfilePage() {
     }
 
     // Use the theme images for the backgrounds
-    console.log(themeSettings.themeColor);
-    switch (themeSettings?.themeColor) {
+    console.log(gfg.themeSettings.themeColor);
+    switch (gfg.themeSettings?.themeColor) {
       case "leafy":
         return {
           //background: "linear-gradient(to bottom right, #f8fafc, #e2e8f0)",
@@ -286,19 +415,83 @@ export default function UserProfilePage() {
 
   // Get font family based on theme settings
   const getFontFamily = () => {
-    if (!userData.settings.themeSettings?.fontFamily || userData.settings.themeSettings.fontFamily === "default") {
-      return "font-sans"
-    }
+    //console.log(gfg.themeSettings.fontFamily);
 
-    const fonts = {
-      serif: "font-serif",
-      mono: "font-mono",
-      rounded: "font-sans",
-      display: "font-serif",
+    return {
+      fontFamily: `"${gfg.themeSettings.fontFamily}", sans-serif`
     }
-
-    return fonts[userData.settings.themeSettings.fontFamily as keyof typeof fonts] || "font-sans"
   }
+
+
+  const getFont = () => {
+
+    if (!gfg.themeSettings?.fontFamily || gfg.themeSettings.fontFamily === "default") {
+      return "default"
+    }
+  
+    return gfg.themeSettings.fontFamily
+  }
+
+  
+  const getButtonColor = () => {
+    //console.log(themeSettings.customTextColor);
+    if (gfg.themeSettings.buttonColor) {
+      return gfg.themeSettings.buttonColor
+    }
+    else{
+      return "#ffffff"
+    }
+  }
+  
+
+  const getButtonTextColor = () => {
+    //console.log(themeSettings.customTextColor);
+    if (gfg.themeSettings.buttonFontColor) {
+      return gfg.themeSettings.buttonFontColor
+    }
+    else{
+      return "#ffffff"
+    }
+  }
+
+  const getButtonBorderCurve = () => {
+    //console.log(themeSettings.customTextColor);
+    if (gfg.themeSettings.buttonBorderCurve) {
+      return gfg.themeSettings.buttonBorderCurve
+    }
+    else{
+      return "rounded-full"
+    }
+  }
+
+  const getButtonType = () => {
+    //console.log(themeSettings.customTextColor);
+    if (gfg.themeSettings.buttonType) {
+      return gfg.themeSettings.buttonType
+    }
+    else{
+      return "transparent"
+    }
+  }
+
+  // Determine if the logo should be inverted based on the theme
+  const shouldInvertLogo = () => {
+    // Light themes that need dark (inverted) logo
+    const lightThemes = [
+      "leafy",
+      "pink-clouds",
+      "mushroom-pattern",
+      "noisy-gradient",
+      "olive-zen",
+      "golden-royale",
+      "lemon-zest",
+      "peach-fuzz",
+    ]
+
+    return lightThemes.includes(themeSettings?.themeColor || "")
+  }
+
+
 
   // Get animation class for theme preview
   const getAnimationClass = () => {
@@ -349,128 +542,137 @@ export default function UserProfilePage() {
   `
 
   return (
-    <>
+    <div style={getBackgroundStyle()}>
       <style>{animationStyles}</style>
-      <div
-        className={cn("min-h-screen w-full py-10", getAnimationClass(), getFontFamily())}
-        style={getBackgroundStyle()}
-      >
-        <div className="max-w-md mx-auto px-4">
-          <MobilePreview></MobilePreview>
-          {/*Profile Header*/}
-          {/* <div className="flex flex-col items-center mb-8">
-            <div className="relative mb-4">
-              <div className="h-28 w-28 rounded-full overflow-hidden bg-white/20 backdrop-blur-sm p-1">
-              {userData.settings.profileImage ? (
-            <div className="h-24 w-24 rounded-full overflow-hidden">
-              <img src={userData.settings.profileImage || "/placeholder.svg"} alt={userData.settings.displayName} className="h-full w-full object-cover" />
-            </div>
-          ) : (
-            <div className="h-24 w-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl font-bold text-white">
-              {userData.settings.displayName
-                .split(" ")
-                .map((name) => name[0])
-                .join("")
-                .toUpperCase()}
-            </div>
-          )}
+      {/* getBackgroundStyle(); */}
+      <div className={cn("flex flex-col items-center")}>
+      <div className="relative w-full max-w-[280px] overflow-hidden rounded-[40px] border-[8px] border-gray-800 bg-white shadow-xl">
+        {/* Notch */}
+        <div className="absolute left-1/2 top-0 h-6 w-32 -translate-x-1/2 rounded-b-xl bg-gray-800"></div>
+
+        {/* Phone screen */}
+        <div
+          className={cn("relative h-[580px] w-full overflow-y-auto", getAnimationClass())}
+          style={getBackgroundType()}
+        >
+          {/* Content */}
+          <div className={cn("flex h-full flex-col items-center px-4 pt-12 pb-6")} style={getFontFamily()}>
+            {/* Profile */}
+            <div className="mb-4 flex flex-col items-center">
+              <div className="mb-3 flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-white/30 to-white/10 text-2xl font-bold backdrop-blur-sm">
+                {profileImage ? (
+                  <img
+                    src={profileImage || "/placeholder.svg"}
+                    alt={displayName}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <span style={getTextColor()}>
+                    {displayName
+                      .split(" ")
+                      .map((name) => name[0])
+                      .join("")
+                      .toUpperCase()}
+                  </span>
+                )}
               </div>
-              {userData.settings.verified && (
-                <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1 border-2 border-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 text-white"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
+              <h2 className="mb-1 text-xl font-bold" style={getTextColor()}>
+                {gfg.displayName || "Your Name"}
+              </h2>
+              <p className="text-center text-sm opacity-80" 
+              style={getTextColor()}
+              >
+                {gfg.bio || "Your bio..."}
+              </p>
+            </div>
+
+            {/* Social Icons - Only show user-added ones */}
+            {activeSocialLinks.length > 0 && (
+              <div className="mb-6 flex flex-wrap justify-center gap-2">
+                {activeSocialLinks.map((social, index) => (
+                  <a
+                    key={index}
+                    href={social.url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-colors hover:bg-white/30"
+                    aria-label={social.name}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
+                    {
+                      renderIcon(social.name)
+                    }
+                  </a>
+                ))}
+              </div>
+            )}
+
+            {/*button component*/}
+            {/* Links - Only show user-added ones */}
+            <div className="flex flex-col gap-5">
+              {activeLinks
+                .filter((link) => link.active)
+                .map((link) => (
+                  
+                  <a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full items-center justify-center py-3 px-4"
+                  >
+                    <ButtonToShow
+                      backgroundColor={getButtonColor()}
+                      textColor={getButtonTextColor()}
+                      borderRadiusClass={getButtonBorderCurve()}
+                      buttonType={getButtonType()}
+                      title={link.title}
+                      fontFamily={getFont()}
+                      thumbnail={
+                          <img
+                            src={link.thumbnail || "/placeholder.svg"}
+                            alt=""
+                            className="h-8 w-8 mr-2 rounded-sm overflow-hidden relative flex-shrink-0"
+                          />
+                      }
                     />
-                  </svg>
+                  </a>
+
+                ))}
+
+              {activeLinks.length === 0 && (
+                <div
+                  className={cn(
+                    "flex w-full items-center justify-center py-3 px-4 text-center text-sm font-medium",
+                    getPlaceholderLinkStyle(),
+                  )}
+                >
+                  Add links to see them here
                 </div>
               )}
             </div>
-            <h1 className="text-2xl font-bold mb-1" style={getTextColor()}>
-              {userData.settings.displayName}
-            </h1>
-            <p className="text-center opacity-90 max-w-xs" style={getTextColor()}>
-              {userData.settings.bio}
-            </p>
-          </div> */}
+          </div>
 
-          {/* Social Links */}
-          {/* {activeSocialLinks.length > 0 && (
-            <div className="flex justify-center gap-3 mb-6">
-              {activeSocialLinks.map((link) => (
-                <a
-                  key={link.id}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-colors hover:bg-white/30"
-                  aria-label={link.name}
-                  style={getTextColor()}
-                >
-                  {renderIcon(link.name)}
-                </a>
-              ))}
-            </div>
-          )} */}
-
-          {/* Regular Links */}
-          {/* <div className="space-y-3 mb-10">
-            {activeLinks.map((link) => (
-              <a
-                key={link.id}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "flex w-full items-center justify-center py-4 px-4 text-center font-medium",
-                  getButtonStyle(),
-                )}
-                style={getTextColor()}
-              >
-                {link.thumbnail && (
-                  <div className="h-5 w-5 mr-3 rounded-sm overflow-hidden relative flex-shrink-0">
-                    <img
-                      src={link.thumbnail || "https://via.placeholder.com/20"}
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                )}
-                <span>{link.title}</span>
-              </a>
-            ))}
-
-            {activeLinks.length === 0 && (
-              <div className="text-center py-8" style={getTextColor()}>
-                <p className="opacity-70">No links have been added yet.</p>
-              </div>
-            )}
-          </div> */}
-
-          {/* Footer */}
-          {/* <div className="absolute bottom-5 left-0 right-0 flex justify-center">
+          {/* Company Logo - Always visible */}
+          <div className="absolute bottom-5 left-0 right-0 flex justify-center">
             <div className="h-10 w-auto opacity-80 transition-opacity hover:opacity-100">
               <img
                 src="/images/logo/inflow-logo.png"
                 alt="Inflow Logo"
                 className="h-full w-auto object-contain"
                 style={{
-                  filter: "invert(0)",
+                  filter: shouldInvertLogo() ? "invert(0)" : "invert(1)",
                   transition: "filter 0.3s ease",
-                  opacity:  0.9 ,
+                  opacity: shouldInvertLogo() ? 0.9 : 0.8,
                 }}
               />
             </div>
-          </div>  */}
-        
+          </div>
         </div>
       </div>
-    </>
+
+      {/* Phone bottom bar */}
+      <div className="mt-1 h-1 w-16 rounded-full bg-gray-800"></div>
+    </div>
+    </div>
   )
 }
