@@ -405,7 +405,7 @@ export function ProfileLinks() {
         <div className="space-y-3">
           {visibleLinks.map((link) => {
             const scheduleStatus = getScheduleStatus(link)
-            console.log(link)
+            //console.log(link)
             return (
               <div
                 key={link.id}

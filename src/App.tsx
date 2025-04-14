@@ -15,6 +15,7 @@ import PricingPage from "./components/payments/pricing-page"
 import SchedulingPage from "./routers/scheduling"
 import UserProfilePage from "./pages/UserProfilePage"
 import { TestPage } from "./test"
+import ProfilePage from "./pages/profile_page/profile"
 
 // This is the parent component that provides the BrowserRouter
 const AppWithParentRouter = () => {
@@ -41,7 +42,8 @@ const AppRoutes = () => {
     path.startsWith("/monitoring") ||
     path.startsWith("/scheduling") ||
     path.startsWith("/payments") ||
-    path.startsWith("/test")
+    path.startsWith("/test")||
+    path.startsWith("/profile")
   )
   const { hasVisitedBefore, setHasVisitedBefore, isAuthenticated } = useAuthStore()
   
@@ -99,6 +101,7 @@ const AppRoutes = () => {
             <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
             <Route path="/scheduling/*" element={<SchedulingPage/>} />
             <Route path="/payments" element={<PricingPage/>}/>
+            <Route path="/profile" element={<ProfilePage/>}/>
             <Route path="/:username" element={<UserProfilePage />} />
             <Route path="/test" element={<TestPage/>} />
           </Routes>

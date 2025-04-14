@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { Calendar, Home, ChevronRight, InstagramIcon, LinkIcon, LogOut, Star } from "lucide-react"
+import { Calendar, Home, ChevronRight, InstagramIcon, LinkIcon, LogOut, Star, SquareUser } from "lucide-react"
 import { useAuthStore } from "@/storage/auth"
 
 const ModernSidebar = () => {
@@ -46,6 +46,12 @@ const ModernSidebar = () => {
       label: "Scheduling",
       icon: InstagramIcon,
     },
+    {
+      id: "profile",
+      path: "/profile",
+      label: "Profile",
+      icon: SquareUser,
+    }
   ]
 
   return (
@@ -156,4 +162,3 @@ const ModernSidebar = () => {
 }
 
 export default ModernSidebar
-
