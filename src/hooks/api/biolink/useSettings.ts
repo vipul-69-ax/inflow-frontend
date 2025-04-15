@@ -35,6 +35,7 @@ export function useSettingsHook() {
         }
       })
       setSettings(response.data)
+      console.log("user_settings", response.data)
       return response.data
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch settings")

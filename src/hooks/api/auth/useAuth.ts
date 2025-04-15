@@ -5,7 +5,6 @@ import { useState, useCallback } from "react"
 import axios from "axios"
 import { useAuthStore } from "@/storage/auth"
 import { useSettingsStore } from "@/storage/settings-store"
-import { useSettingsHook } from "../biolink/useSettings"
 
 // Types
 export interface User {

@@ -16,6 +16,7 @@ import CreateFacebookPostModal from "@/components/scheduling/fb/CreatePostModal"
 import EmptyState from "@/components/scheduling/fb/EmptyState"
 import { cn } from "@/lib/utils"
 import { useNavigate } from "react-router-dom"
+import { useSettingsStore } from "@/storage/settings-store"
 
 
 export default function ScheduleFB() {
@@ -44,7 +45,7 @@ export default function ScheduleFB() {
   const [selectedPage, setSelectedPage] = useState<string | null>(null)
   const [showPageSelectionModal, setShowPageSelectionModal] = useState(false)
   const [facebookPages, setFacebookPages] = useState<any[]>([])
-
+  const [jobsScheduled, setJobsScheduled] = useState([])
   
   const { getFacebookPages } = useFacebookPages()
   
@@ -108,7 +109,7 @@ export default function ScheduleFB() {
       try {
         // Fetch scheduled jobs
         const jobs = await getScheduledJobs()
-        console.log(jobs)
+        setJobsScheduled(jobs.jobs.length)
       } catch (err) {
         console.error("Error fetching Facebook content:", err)
         setError("Failed to load Facebook content")
@@ -151,7 +152,13 @@ export default function ScheduleFB() {
     }
   }, [story, toast])
 
+  const is_paid = useSettingsStore().is_paid
+
   const handleCreateNewPost = (type: "post" | "reel" | "story") => {
+    if(!is_paid && jobsScheduled && jobsScheduled.length>=2){
+      toast("You can schedule only 2 jobs at atime")
+      return
+    }
     console.log("This is my user id ", localStorage.getItem("ig_user_id"))
     setPostType(type)
     setOpenPostModal(true)

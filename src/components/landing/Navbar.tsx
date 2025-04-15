@@ -1,7 +1,6 @@
 import  { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "/images/logo/inflow-logo.png"; // Adjust the path as needed
-import { useAuthStore } from "@/storage/auth";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,8 +9,7 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const {markAsVisited} = useAuthStore()
-
+  const navigate = useNavigate()
   return (
     <nav className="flex items-center justify-between px-4 xs:px-6 py-4 max-w-7xl mx-auto bg-white ">
       {/* Logo */}
@@ -88,7 +86,8 @@ const Navbar = () => {
       <div className="hidden md:flex items-center space-x-4">
         <button
           onClick={()=>{
-            markAsVisited()
+            navigate("/")
+
           }}
           className="text-blue-600 hover:text-blue-800 transition-colors text-sm md:text-base"
           style={{ fontFamily: "Avenir LT Std, sans-serif" }}
@@ -97,7 +96,7 @@ const Navbar = () => {
         </button>
         <button
           onClick={()=>{
-            markAsVisited()
+            navigate("/")
           }}
           className="bg-blue-600 text-white px-3 py-1.5 xs:px-4 xs:py-2 rounded-full hover:bg-blue-700 transition-colors text-sm md:text-base"
           style={{ fontFamily: "Avenir LT Std, sans-serif" }}
@@ -149,7 +148,7 @@ const Navbar = () => {
             className="text-blue-600 hover:text-blue-800 transition-colors text-base"
             style={{ fontFamily: "Avenir LT Std, sans-serif" }}
             onClick={()=>{
-              markAsVisited()
+              navigate("/")
             }}
           >
             Log In
@@ -158,7 +157,7 @@ const Navbar = () => {
             className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors text-base"
             style={{ fontFamily: "Avenir LT Std, sans-serif" }}
             onClick={()=>{
-              markAsVisited()
+              navigate("/")
             }}
           >
             Sign Up

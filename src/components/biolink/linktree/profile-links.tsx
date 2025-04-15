@@ -42,6 +42,8 @@ import { ScheduleDialog } from "@/components/biolink/linktree/schedule-dialog"
 // import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
 import { useLinksStore } from "@/storage/links-store"
 import { useUserLinks } from "@/hooks/api/biolink/useUserLinks"
+import { useSettingsStore } from "@/storage/settings-store"
+import { toast } from "sonner"
 
 export function ProfileLinks() {
   const [isAddLinkOpen, setIsAddLinkOpen] = useState(false)
@@ -216,8 +218,13 @@ export function ProfileLinks() {
     selectedLinkForAnalytics !== null ? regularLinks.find((link) => link.id === selectedLinkForAnalytics) : null
 
   const analyticsData = generateAnalyticsData(selectedLinkForAnalytics)
+  const is_paid = useSettingsStore().is_paid
 
   const openScheduleDialog = (linkId: number) => {
+    if(!is_paid){
+      toast("You can schedule links only in pro or guru plan")
+      return
+    }
     const link = regularLinks.find((l) => l.id === linkId)
     if (link) {
       setActiveLinkForSchedule(linkId)

@@ -41,7 +41,7 @@ type SettingsState = {
   bio: string
   website: string
   profileImage: string | null
-
+  is_paid:null|string
   // Account settings
   email: string
   twoFactorEnabled: boolean
@@ -64,6 +64,7 @@ type SettingsState = {
   setDisplayName: (name: string) => void
   setUsername: (username: string) => void
   setBio: (bio: string) => void
+  setIsPaid:(is_paid:null|string)=>void
   setWebsite: (website: string) => void
   setProfileImage: (image: string | null) => void
   setEmail: (email: string) => void
@@ -90,6 +91,7 @@ export const useSettingsStore = create<SettingsState>()(
       website: "",
       profileImage: null,
       email: "",
+      is_paid:null,
       twoFactorEnabled: false,
       theme: "light",
       appearancePreferences: {
@@ -123,7 +125,10 @@ export const useSettingsStore = create<SettingsState>()(
       },
       isSaving: false,
       hasChanges: false,
-
+      
+      setIsPaid:(is_paid)=>{
+        set({is_paid:is_paid})
+      },
       // Actions
       setDisplayName: (name) => {
         set({ displayName: name, hasChanges: true })
@@ -262,6 +267,7 @@ export const useSettingsStore = create<SettingsState>()(
           email: dbSettings.email || "",
           twoFactorEnabled: dbSettings.twoFactorEnabled || false,
           theme: dbSettings.theme || "light",
+          is_paid:dbSettings.is_paid || null,
           appearancePreferences: dbSettings.appearancePreferences || {
             showLogo: true,
             animations: true,

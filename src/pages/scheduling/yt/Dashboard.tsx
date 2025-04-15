@@ -8,6 +8,8 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import { ChevronLeft } from "lucide-react"
 import { useAuthStore } from "@/storage/auth"
 import { useS3Upload } from "@/hooks/api/storage/useS3Uploads"
+import { useSettingsStore } from "@/storage/settings-store"
+import { toast } from "sonner"
 
 export default function YouTubeScheduler() {
   const [searchParams] = useSearchParams()
@@ -109,7 +111,6 @@ export default function YouTubeScheduler() {
   const loadScheduledMedia = async () => {
     try {
       const response = await fetchScheduledMedia()
-
       if (response?.success && response.media) {
         setScheduledMedia(response.media)
       } else {
@@ -137,9 +138,13 @@ export default function YouTubeScheduler() {
       }
     }
   }
-
+  const is_paid = useSettingsStore().is_paid
   // Handle video scheduling
   const handleScheduleVideo = async (e: FormEvent) => {
+    if(!is_paid && scheduledMedia && scheduledMedia.length>=2){
+      toast("You can schedule only 2 jobs at atime")
+      return
+    }
     e.preventDefault()
 
     if (!videoFile) {

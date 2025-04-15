@@ -21,6 +21,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useSettingsStore } from "@/storage/settings-store"
+import { toast } from "sonner"
 
 export default function TiktokDashboard() {
   const [username, setUsername] = useState("")
@@ -62,10 +64,13 @@ export default function TiktokDashboard() {
       setUserData(data)
     }
   }
-
+    const is_paid = useSettingsStore().is_paid
+  
   const handleAddUser = async () => {
-    if(monitoredUsers.length>=5){
-      alert("You can only monitor 5 accounts at a time.")
+    const limit = !is_paid?1:5
+
+    if(monitoredUsers.length>=limit){
+      toast(`You can only monitor ${limit} accounts at a time.`)
       return
     }
     if (!username.trim()) {

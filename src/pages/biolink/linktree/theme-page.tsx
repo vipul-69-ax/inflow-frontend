@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowLeft, Share2 } from "lucide-react"
+import { ArrowLeft, Lock, Share2 } from "lucide-react"
 import { MobilePreview } from "@/components/biolink/linktree/mobile-preview"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -16,6 +16,7 @@ import { useSettingsStore } from "@/storage/settings-store"
 import { useSettingsHook } from "@/hooks/api/biolink/useSettings"
 import ButtonEditor from "@/pages/biolink/linktree/choosebutton/button"
 import FontEditor from "@/pages/biolink/linktree/choosebutton/fonteditor"
+import { toast } from "sonner"
 
 export default function ThemePage() {
   const { themeSettings, setThemeSettings, appearancePreferences, setAppearancePreference } =
@@ -37,6 +38,7 @@ const {updateSettings} = useSettingsHook()
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [showTextColorPicker, setShowTextColorPicker] = useState(false)
   const [selectButton, setSelectedButton] = useState("");
+  const is_paid = useSettingsStore().is_paid
 
   // Available themes with more aesthetic options
   const themes = [
@@ -45,6 +47,7 @@ const {updateSettings} = useSettingsHook()
       name: "Leafy",
       image: "/images/themes/leafy.jpg",
       color: "url('/images/themes/leafy.jpg')",
+      premium:true,
       textColor: "#2c3e50",
       description: "Minimalist design with elegant leaf illustrations",
       buttonStyle: "bg-[#2c3e50]/20 hover:bg-[#2c3e50]/30 text-[#2c3e50] border border-[#2c3e50]/30",
@@ -251,6 +254,11 @@ const {updateSettings} = useSettingsHook()
   // Update the theme selection to provide immediate visual feedback
   // Enhance the theme selection handler to update the preview immediately
   const handleThemeSelect = (themeId: string) => {
+    const is_premium = themes.find(i=>i.id==themeId)?.premium
+    if(is_premium && !is_paid){
+      toast("Only avaibable in guru or pro plan")
+      return
+    }
     setSelectedTheme(themeId)
 
     // If selecting a predefined theme, update background type accordingly
@@ -307,7 +315,13 @@ const {updateSettings} = useSettingsHook()
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="col-span-2 space-y-8">
-            <Tabs defaultValue="themes" value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs defaultValue="themes" value={activeTab} onValueChange={(t)=>{
+              if(!is_paid && t =="buttons"){
+                toast("Buttons can be customized in pro or guru plan")
+                return
+              }
+              setActiveTab(t)
+            }} className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="themes">Themes</TabsTrigger>
                 <TabsTrigger value="buttons">Buttons</TabsTrigger>
@@ -355,7 +369,7 @@ const {updateSettings} = useSettingsHook()
                             />
                           </div>
                           <div className="bg-white dark:bg-gray-800 p-2 text-center">
-                            <p className="text-xs font-medium">{theme.name}</p>
+                            <p className="text-xs font-medium">{theme.name} {theme.premium&&<Lock className="h-5 w-5"/>}</p>
                           </div>
                         </div>
                       </div>
