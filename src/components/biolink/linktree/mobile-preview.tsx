@@ -445,9 +445,6 @@ export function MobilePreview({ className }: MobilePreviewProps) {
   // Update the JSX to use these enhanced styling functions
   return (
     <div className={cn("flex flex-col items-center", className)}>
-      <div>
-        {useSettingsStore().is_paid} is paid
-      </div>
       <div className="relative w-full max-w-[280px] overflow-hidden rounded-[40px] border-[8px] border-gray-800 bg-white shadow-xl">
         {/* Notch */}
         <div className="absolute left-1/2 top-0 h-6 w-32 -translate-x-1/2 rounded-b-xl bg-gray-800"></div>

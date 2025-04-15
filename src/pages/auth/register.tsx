@@ -144,7 +144,7 @@ export default function RegisterPage() {
   const handleDialogClose = () => {
     setShowVerificationDialog(false)
     // Navigate after dialog is closed
-    navigate("/")
+    navigate("/login")
   }
 
   // Show success message if registration is successful but dialog is closed

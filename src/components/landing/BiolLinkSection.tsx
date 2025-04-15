@@ -1,9 +1,11 @@
 import React from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { useNavigate } from "react-router-dom";
 
 const BioLinkSection: React.FC<{ lottieAnimationPath: string }> = ({
   lottieAnimationPath = "./",
 }) => {
+  const navigate = useNavigate()
   return (
     <section
       className="relative w-full py-6 px-3 xs:py-8 xs:px-4 sm:py-12 sm:px-6 md:py-16 md:px-8 lg:py-24"
@@ -132,6 +134,10 @@ const BioLinkSection: React.FC<{ lottieAnimationPath: string }> = ({
           <button
             className="flex items-center justify-center space-x-1 px-3 py-1.5 xs:px-4 xs:py-2 sm:px-6 sm:py-3 rounded-lg hover:opacity-90 transition-opacity duration-300 mx-auto md:mx-0"
             style={{ backgroundColor: "#126AD4", color: "#FFFFFF" }}
+            onClick={()=>{
+            navigate("/login")
+
+            }}
           >
             <span
               className="text-xs xs:text-sm sm:text-lg"

@@ -22,7 +22,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 
-export default function LoginPage() {
+export default function LoginPage({onSucess}:{onSucess:()=>void}) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -44,6 +44,7 @@ export default function LoginPage() {
     clientId: "473227188517-n690ie9aq3q0n1d6usmnel4mldn0amqb.apps.googleusercontent.com",
     onSuccess: () => {
       setIsAuthenticated(true)
+      onSucess()
     },
     onFailure: (error) => setFormErrors({ google: error.message }),
   })
@@ -106,6 +107,7 @@ export default function LoginPage() {
 
       // Mark as visited in Zustand store
       setIsAuthenticated(true)
+      onSucess()
       // Navigate to dashboard
     } catch (error: any) {
       // Check if the error is due to unverified email

@@ -86,7 +86,7 @@ const Navbar = () => {
       <div className="hidden md:flex items-center space-x-4">
         <button
           onClick={()=>{
-            navigate("/")
+            navigate("/login")
 
           }}
           className="text-blue-600 hover:text-blue-800 transition-colors text-sm md:text-base"
@@ -96,7 +96,7 @@ const Navbar = () => {
         </button>
         <button
           onClick={()=>{
-            navigate("/")
+            navigate("/login")
           }}
           className="bg-blue-600 text-white px-3 py-1.5 xs:px-4 xs:py-2 rounded-full hover:bg-blue-700 transition-colors text-sm md:text-base"
           style={{ fontFamily: "Avenir LT Std, sans-serif" }}
@@ -148,7 +148,7 @@ const Navbar = () => {
             className="text-blue-600 hover:text-blue-800 transition-colors text-base"
             style={{ fontFamily: "Avenir LT Std, sans-serif" }}
             onClick={()=>{
-              navigate("/")
+              navigate("/login")
             }}
           >
             Log In
@@ -157,7 +157,7 @@ const Navbar = () => {
             className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors text-base"
             style={{ fontFamily: "Avenir LT Std, sans-serif" }}
             onClick={()=>{
-              navigate("/")
+              navigate("/login")
             }}
           >
             Sign Up
