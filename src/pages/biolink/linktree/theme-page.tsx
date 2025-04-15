@@ -27,7 +27,7 @@ const {updateSettings} = useSettingsHook()
   //const [buttonStyle, setButtonStyle] = useState(() => themeSettings.buttonStyle || "rounded")
   const [buttonShadow, setButtonShadow] = useState(() => themeSettings.buttonShadow || false)
   const [customBgColor, setCustomBgColor] = useState(() => themeSettings.customBackground || "#9333ea")
-  const [customTextColor, setCustomTextColor] = useState(() => themeSettings.customTextColor || "#ffffff")
+  const [customTextColor, setCustomTextColor] = useState(() => themeSettings.customTextColor || "#cd3737")
   const [fontFamily, setFontFamily] = useState(() => themeSettings.fontFamily || "default")
   const [backgroundType, setBackgroundType] = useState(() => themeSettings.backgroundType || "solid")
   const [backgroundOpacity, setBackgroundOpacity] = useState(() => themeSettings.backgroundOpacity || 100)
@@ -284,7 +284,13 @@ const {updateSettings} = useSettingsHook()
   // Get background style for theme preview
 
   // Get animation class for theme preview
-  console.log("Font Family ki value hain:", useSettingsStore.getState().themeSettings.fontFamily)
+  // console.log("Font Family ki value hain:", useSettingsStore.getState().themeSettings.fontFamily)
+  // console.log("Button Type ki value hain:", useSettingsStore.getState().themeSettings.buttonType)
+  // console.log("Button border ki value hain:", useSettingsStore.getState().themeSettings.buttonBorderCurve)
+  // console.log("Button ka colour hain:", useSettingsStore.getState().themeSettings.buttonColor)
+  // console.log("Button ke font ka colour hain:", useSettingsStore.getState().themeSettings.buttonFontColor)
+  // console.log("custom font ka colour hain:", useSettingsStore.getState().themeSettings.customTextColor)
+
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900 md:flex-row transition-colors duration-300">
@@ -504,39 +510,52 @@ const {updateSettings} = useSettingsHook()
                 <div className="rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-700 p-6">
                   <h2 className="mb-6 text-2xl font-semibold dark:text-white" style={{fontFamily:"Avenir LT Std"}}>Button</h2>
                   <h4 className="mr-2 mb-2 text-md " style={{fontFamily:"Avenir LT Std"}}>Fill</h4>
-                    <ButtonEditor type="fill" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
+                    <ButtonEditor type="fill" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton} selectedButtontype={buttonType} setSelectedButtontype={setButtonType} selectedButtonborder={buttonBorderCurve} setSelectedButtonborder={setButtonBorderCurve}  />
                     <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Outline</h4>
-                    <ButtonEditor type="outline" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
+                    <ButtonEditor type="outline" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton} selectedButtontype={buttonType} setSelectedButtontype={setButtonType} selectedButtonborder={buttonBorderCurve} setSelectedButtonborder={setButtonBorderCurve}/>
                     <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Hard Shadow</h4>
-                    <ButtonEditor type="hard" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
+                    <ButtonEditor type="hard" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton} selectedButtontype={buttonType} setSelectedButtontype={setButtonType} selectedButtonborder={buttonBorderCurve} setSelectedButtonborder={setButtonBorderCurve}/>
                     <h4 className="mr-2 mt-6 mb-2 text-md" style={{fontFamily:"Avenir LT Std"}}>Soft Shadow</h4>
-                    <ButtonEditor type="soft" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton}/>
+                    <ButtonEditor type="soft" selectedStyleId={selectButton} setSelectedStyleId={setSelectedButton} selectedButtontype={buttonType} setSelectedButtontype={setButtonType} selectedButtonborder={buttonBorderCurve} setSelectedButtonborder={setButtonBorderCurve}/>
 
-                    {/*button colour */}
-                    <h2 className="mr-2 mt-6 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Button Colour</h2>
-                    <div className="flex flex-row mt-2">
-                      <div>
-                        <input
-                          type="color"
-                          className="mr-3 h-14 w-14 rounded-sm appearance-none cursor-pointer bg-transparent p-0
-                            [&::-moz-color-swatch]:h-full [&::-moz-color-swatch]:w-full [&::-moz-color-swatch]:border-none
-                            [&::-webkit-color-swatch-wrapper]:p-0 
-                            [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
-                          data-testid="ColorSelector"
-                          aria-label="Select color"
-                          value="#a04649"
-                          />
-                      </div>
-                      <div className="w-45 h-14 rounded-lg border-2 border-black" >
-                        <label className="ml-3 text-sm text-gray-400" style={{fontFamily:"Avenir LT Std"}}>Button Colour</label>
-                        <div className="w-[100px] overflow-hidden ml-3">
-                          <input
-                            className="w-full border-b  outline-none bg-transparent "
-                            defaultValue="#a04649"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    
+              {/* Button Colour Section */}
+              <h2 className="mr-2 mt-6 mb-2 text-lg" style={{ fontFamily: "Avenir LT Std" }}>Button Colour</h2>
+              <div className="flex flex-row mt-2">
+                {/* Color Picker Input */}
+                <div>
+                  <input
+                    type="color"
+                    className="mr-3 h-14 w-14 rounded-sm appearance-none cursor-pointer bg-transparent p-0
+                      [&::-moz-color-swatch]:h-full [&::-moz-color-swatch]:w-full [&::-moz-color-swatch]:border-none
+                      [&::-webkit-color-swatch-wrapper]:p-0 
+                      [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
+                    data-testid="ColorSelector"
+                    aria-label="Select color"
+                    value={buttonColor}
+                    onChange={(e) => setButtonColor(e.target.value)}
+                  />
+                </div>
+
+                {/* Text Input Field */}
+                <div className="w-45 h-14 rounded-lg border-2 border-black">
+                  <label className="ml-3 text-sm text-gray-400" style={{ fontFamily: "Avenir LT Std" }}>
+                    Button Colour
+                  </label>
+                  <div className="w-[100px] overflow-hidden ml-3">
+                    <input
+                      className="w-full border-b outline-none bg-transparent"
+                      value={buttonColor}
+                      onChange={(e) => setButtonColor(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div> 
+
+
+
+
+
 
 
 
@@ -547,6 +566,7 @@ const {updateSettings} = useSettingsHook()
                     {/*button font colour */}                    
                     <h2 className="mr-2 mt-2 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Button Font Colour</h2>
                     <div className="flex flex-row mt-2">
+                      {/* Color Picker Input */}
                       <div>
                         <input
                           type="color"
@@ -556,15 +576,21 @@ const {updateSettings} = useSettingsHook()
                             [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
                           data-testid="ColorSelector"
                           aria-label="Select color"
-                          value="#2ec2d6"
-                          />
+                          value={buttonFontColor}
+                          onChange={(e) => setButtonFontColor(e.target.value)}
+                        />
                       </div>
-                      <div className="w-45 h-14 rounded-lg border-2 border-black" >
-                        <label className="ml-3 text-sm text-gray-400" style={{fontFamily:"Avenir LT Std"}}>Button Font Colour</label>
+
+                      {/* Text Input Field */}
+                      <div className="w-45 h-14 rounded-lg border-2 border-black">
+                        <label className="ml-3 text-sm text-gray-400" style={{ fontFamily: "Avenir LT Std" }}>
+                          Button Font Colour
+                        </label>
                         <div className="w-[100px] overflow-hidden ml-3">
                           <input
                             className="w-full border-b outline-none bg-transparent"
-                            defaultValue="#2ec2d6"
+                            value={buttonFontColor}
+                            onChange={(e) => setButtonFontColor(e.target.value)}
                           />
                         </div>
                       </div>
@@ -582,9 +608,12 @@ const {updateSettings} = useSettingsHook()
                     {/*font family*/}
                     <h2 className="mr-2 mt-4 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Font Family</h2>
                     <FontEditor FontFamilyId={fontFamily} setFontFamilyId={setFontFamily}/>
-                    {/*font colour */}                    
+                    {/*font colour */}             
+
+
                     <h2 className="mr-2 mt-2 mb-2 text-lg" style={{fontFamily:"Avenir LT Std"}}>Font Colour</h2>
                     <div className="flex flex-row mt-2">
+                      {/* Color Picker Input */}
                       <div>
                         <input
                           type="color"
@@ -594,19 +623,27 @@ const {updateSettings} = useSettingsHook()
                             [&::-webkit-color-swatch]:h-full [&::-webkit-color-swatch]:w-full [&::-webkit-color-swatch]:border-none"
                           data-testid="ColorSelector"
                           aria-label="Select color"
-                          value="#1a5276"
-                          />
+                          value={customTextColor}
+                          onChange={(e) => setCustomTextColor(e.target.value)}
+                        />
                       </div>
-                      <div className="w-45 h-14 rounded-lg border-2 border-black" >
-                        <label className="ml-3 text-sm text-gray-400" style={{fontFamily:"Avenir LT Std"}}>Font Colour</label>
+
+                      {/* Text Input Field */}
+                      <div className="w-45 h-14 rounded-lg border-2 border-black">
+                        <label className="ml-3 text-sm text-gray-400" style={{ fontFamily: "Avenir LT Std" }}>
+                          Font Colour
+                        </label>
                         <div className="w-[100px] overflow-hidden ml-3">
                           <input
-                            className="w-full border-b outline-none bg-transparent "
-                            defaultValue="#1a5276"
+                            className="w-full border-b outline-none bg-transparent"
+                            value={customTextColor}
+                            onChange={(e) => setCustomTextColor(e.target.value)}
                           />
                         </div>
                       </div>
                     </div>
+
+
                 </div>
               </TabsContent>
             </Tabs>
@@ -617,10 +654,6 @@ const {updateSettings} = useSettingsHook()
               </Button>
             </div>
           </div>
-
-
-
-
 
 
           {/* Mobile Preview */}

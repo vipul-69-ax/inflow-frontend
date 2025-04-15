@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { Calendar, Home, ChevronRight, InstagramIcon, LinkIcon, LogOut, Star, Crown, Zap } from "lucide-react"
+import { Calendar, Home, ChevronRight, InstagramIcon, LinkIcon, LogOut, Star, SquareUser, Crown, Zap } from "lucide-react"
 import { useAuthStore } from "@/storage/auth"
 import { useSettingsStore } from "@/storage/settings-store"
 
@@ -54,6 +54,12 @@ const ModernSidebar = () => {
       label: "Scheduling",
       icon: InstagramIcon,
     },
+    {
+      id: "profile",
+      path: "/profile",
+      label: "Profile",
+      icon: SquareUser,
+    }
   ]
 
   // Get the appropriate icon and color scheme based on plan type

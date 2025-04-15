@@ -59,28 +59,27 @@ export function ProfileLinks() {
   const [showHiddenLinks, setShowHiddenLinks] = useState(false)
   const [isScheduleDialogOpen, setIsScheduleDialogOpen] = useState(false)
   const [activeLinkForSchedule, setActiveLinkForSchedule] = useState<number | null>(null)
+  const [currentEditLink, setCurrentEditLink] = useState<any>(null)
 
   const { updateRegularLinks } = useUserLinks()
 
-
   const {
     regularLinks,
-    toggleActive:toggleLinkActive,
+    toggleActive: toggleLinkActive,
     deleteLink,
-    toggleFavorite:toggleLinkFavorite,
-    incrementClicks:incrementLinkClicks,
-    updateThumbnail:updateLinkThumbnail,
+    toggleFavorite: toggleLinkFavorite,
+    incrementClicks: incrementLinkClicks,
+    updateThumbnail: updateLinkThumbnail,
     updateRegularLink,
     addRegularLink,
   } = useLinksStore()
 
-  const updateLinkSchedule =(id:any, scheduleStart:any, scheduleEnd:any, timezone:any) =>
+  const updateLinkSchedule = (id: any, scheduleStart: any, scheduleEnd: any, timezone: any) =>
     updateRegularLink(id, { scheduleStart, scheduleEnd, timezone })
-  
+
   const handleLinkClick = (id: number) => {
     incrementLinkClicks(id)
   }
-
 
   const handleAddLink = (data: { title: string; url: string }) => {
     const newLink = {
@@ -95,15 +94,15 @@ export function ProfileLinks() {
     updateRegularLinks([...regularLinks, newLink])
   }
 
-  const handleUpdateLink = async(data: { title: string; url: string }, id?: number) => {
+  const handleUpdateLink = async (data: { title: string; url: string }, id?: number) => {
     if (id !== undefined) {
       updateRegularLink(id, data)
       // console.log(regularLinks)
-      setTimeout(async()=>await updateRegularLinks(regularLinks),2000)
+      setTimeout(async () => await updateRegularLinks(regularLinks), 2000)
     }
     setIsEditLinkOpen(false)
   }
-  
+
   const handleShareLink = (url: string) => {
     // Skip Web Share API entirely and go straight to clipboard
     copyToClipboard(url)
@@ -170,9 +169,7 @@ export function ProfileLinks() {
     if (activeLinkForThumbnail !== null) {
       updateLinkThumbnail(activeLinkForThumbnail, thumbnailUrl)
       updateRegularLinks(
-        regularLinks.map((l) =>
-          l.id === activeLinkForThumbnail ? { ...l, thumbnail: thumbnailUrl } : l
-        )
+        regularLinks.map((l) => (l.id === activeLinkForThumbnail ? { ...l, thumbnail: thumbnailUrl } : l)),
       )
       setActiveLinkForThumbnail(null)
     }
@@ -239,11 +236,7 @@ export function ProfileLinks() {
     if (activeLinkForSchedule !== null) {
       updateLinkSchedule(activeLinkForSchedule, scheduleStart, scheduleEnd, timezone)
       updateRegularLinks(
-        regularLinks.map((l) =>
-          l.id === activeLinkForSchedule
-            ? { ...l, scheduleStart, scheduleEnd, timezone }
-            : l
-        )
+        regularLinks.map((l) => (l.id === activeLinkForSchedule ? { ...l, scheduleStart, scheduleEnd, timezone } : l)),
       )
     }
   }
@@ -419,7 +412,7 @@ export function ProfileLinks() {
         <div className="space-y-3">
           {visibleLinks.map((link) => {
             const scheduleStatus = getScheduleStatus(link)
-
+            //console.log(link)
             return (
               <div
                 key={link.id}
@@ -429,11 +422,7 @@ export function ProfileLinks() {
                   <div className="flex-shrink-0">
                     {link.thumbnail ? (
                       <div className="h-10 w-10 rounded-md overflow-hidden relative">
-                        <img
-                          src={link.thumbnail || "/placeholder.svg"}
-                          alt={link.title}
-                          className="object-cover"
-                        />
+                        <img src={link.thumbnail || "/placeholder.svg"} alt={link.title} className="object-cover" />
                       </div>
                     ) : (
                       <MoreVertical className="h-5 w-5 text-gray-400 dark:text-gray-500 transition-colors duration-300 hidden" />
@@ -441,7 +430,9 @@ export function ProfileLinks() {
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-medium dark:text-white transition-colors duration-300">{link.title}</h3>
+                      <h3 className="font-medium dark:text-white transition-colors duration-300 max-w-[100px] overflow-hidden">
+                        {link.title}
+                      </h3>
                       {link.scheduleStart || link.scheduleEnd ? (
                         <Badge
                           variant="outline"
@@ -527,9 +518,6 @@ export function ProfileLinks() {
                       </Tooltip>
                     </TooltipProvider>
 
-
-
-
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -550,10 +538,6 @@ export function ProfileLinks() {
                       </Tooltip>
                     </TooltipProvider>
 
-
-
-
-
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -561,11 +545,10 @@ export function ProfileLinks() {
                             variant="ghost"
                             size="icon"
                             className="h-7 w-7"
-                            onClick={() => {toggleLinkFavorite(link.id as number)
+                            onClick={() => {
+                              toggleLinkFavorite(link.id as number)
                               updateRegularLinks(
-                                regularLinks.map((l) =>
-                                  l.id === link.id ? { ...l, favorite: !l.favorite } : l
-                                )
+                                regularLinks.map((l) => (l.id === link.id ? { ...l, favorite: !l.favorite } : l)),
                               )
                             }}
                           >
@@ -579,10 +562,6 @@ export function ProfileLinks() {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-
-
-
-
 
                     <TooltipProvider>
                       <Tooltip>
@@ -608,9 +587,6 @@ export function ProfileLinks() {
                       </Tooltip>
                     </TooltipProvider>
 
-
-
-
                     <Button
                       variant="ghost"
                       className={`flex items-center h-7 px-2 rounded-full text-xs ${link.clicks ? "bg-purple-600 text-white hover:bg-purple-700" : ""}`}
@@ -622,10 +598,6 @@ export function ProfileLinks() {
                       <span>{link.clicks || 0} clicks</span>
                     </Button>
                   </div>
-
-
-
-
 
                   {/* Mobile dropdown for options */}
                   <div className="md:hidden">
@@ -664,13 +636,14 @@ export function ProfileLinks() {
                           <Share2 className="mr-2 h-4 w-4" />
                           <span>Share</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => {toggleLinkFavorite(link.id as number)
-                          updateRegularLinks(
-                            regularLinks.map((l) =>
-                              l.id === link.id ? { ...l, favorite: !l.favorite } : l
+                        <DropdownMenuItem
+                          onClick={() => {
+                            toggleLinkFavorite(link.id as number)
+                            updateRegularLinks(
+                              regularLinks.map((l) => (l.id === link.id ? { ...l, favorite: !l.favorite } : l)),
                             )
-                          )
-                        }}>
+                          }}
+                        >
                           <Star className={`mr-2 h-4 w-4 ${link.favorite ? "text-yellow-400" : ""}`} />
                           <span>{link.favorite ? "Unfavorite" : "Favorite"}</span>
                         </DropdownMenuItem>
@@ -683,13 +656,23 @@ export function ProfileLinks() {
                           <span>View Analytics ({link.clicks || 0} clicks)</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => {deleteLink(link.id as number)
-                          updateRegularLinks(regularLinks.filter((l) => l.id !== link.id))
-                        }} className="text-red-600">
+                        <DropdownMenuItem
+                          onClick={() => {
+                            deleteLink(link.id as number)
+                            updateRegularLinks(regularLinks.filter((l) => l.id !== link.id))
+                          }}
+                          className="text-red-600"
+                        >
                           <Trash2 className="mr-2 h-4 w-4" />
                           <span>Delete</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setIsEditLinkOpen(true)} className="text-blue-400">
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setCurrentEditLink(link)
+                            setIsEditLinkOpen(true)
+                          }}
+                          className="text-blue-400"
+                        >
                           <Pencil className="mr-2 h-4 w-4" />
                           <span>Edit</span>
                         </DropdownMenuItem>
@@ -697,15 +680,13 @@ export function ProfileLinks() {
                     </DropdownMenu>
                   </div>
 
-
-
-
                   {/* Delete buttons (desktop only) */}
                   <div className="hidden md:flex items-center space-x-2">
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => {deleteLink(link.id as number)
+                      onClick={() => {
+                        deleteLink(link.id as number)
                         updateRegularLinks(regularLinks.filter((l) => l.id !== link.id))
                       }}
                       className="h-7 w-7 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors duration-300"
@@ -715,33 +696,28 @@ export function ProfileLinks() {
                     </Button>
                   </div>
 
-
                   {/* Edit button (desktop only) */}
                   <div className="hidden md:flex items-center space-x-2">
-                   <Button
-                     variant="ghost"
-                     size="icon"
-                    //  onClick={() =>updateRegularLink(link.id,)} // 👈 update this with your actual edit logic
-                     className="h-7 w-7 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300"
-                     aria-label="Edit link"
-                     onClick={() => setIsEditLinkOpen(true)}
-                   >
-                     <Pencil className="h-3.5 w-3.5" />
-                   </Button>
-                   <LinkDialog isOpen={isEditLinkOpen} onOpenChange={setIsEditLinkOpen} onSave={handleUpdateLink} initialData ={link}/>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300"
+                      aria-label="Edit link"
+                      onClick={() => {
+                        setCurrentEditLink(link)
+                        setIsEditLinkOpen(true)
+                      }}
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Button>
                   </div>
-
-
 
                   {/* Toggle switch */}
                   <Switch
                     checked={link.active}
-                    onCheckedChange={() => {toggleLinkActive(link.id as number)
-                      updateRegularLinks(
-                        regularLinks.map((l) =>
-                          l.id === link.id ? { ...l, active: !l.active } : l
-                        )
-                      )
+                    onCheckedChange={() => {
+                      toggleLinkActive(link.id as number)
+                      updateRegularLinks(regularLinks.map((l) => (l.id === link.id ? { ...l, active: !l.active } : l)))
                     }}
                     className="ml-1"
                     aria-label={link.active ? "Disable link" : "Enable link"}
@@ -753,9 +729,6 @@ export function ProfileLinks() {
         </div>
       )}
 
-      <LinkDialog isOpen={isAddLinkOpen} onOpenChange={setIsAddLinkOpen} onSave={handleAddLink} />
-
-      {/* Thumbnail Upload Dialog */}
       <ThumbnailUploadDialog
         isOpen={isThumbnailDialogOpen}
         onOpenChange={setIsThumbnailDialogOpen}
@@ -926,7 +899,14 @@ export function ProfileLinks() {
           activeLinkForSchedule !== null ? regularLinks.find((l) => l.id === activeLinkForSchedule)?.title || "" : ""
         }
       />
+      <LinkDialog isOpen={isAddLinkOpen} onOpenChange={setIsAddLinkOpen} onSave={handleAddLink} />
+
+      <LinkDialog
+        isOpen={isEditLinkOpen}
+        onOpenChange={setIsEditLinkOpen}
+        onSave={handleUpdateLink}
+        initialData={currentEditLink}
+      />
     </div>
   )
 }
-

@@ -18,6 +18,7 @@ import ModernSidebar from "@/components/app-sidebar"
 import { useAuthStore } from "./storage/auth"
 import { useSettingsStore } from "./storage/settings-store"
 import { useSettingsHook } from "./hooks/api/biolink/useSettings"
+import ProfilePage from "./pages/profile_page/profile"
 
 const AppWithParentRouter = () => {
   return (
@@ -46,9 +47,10 @@ const AppRoutes = () => {
     path.startsWith("/monitoring") ||
     path.startsWith("/scheduling") ||
     path.startsWith("/payments") ||
+    path.startsWith("/profile") ||
     path.startsWith("/login")
   )
-
+  
   // Load settings into Zustand on mount
   useEffect(() => {
     const checkStores = async () => {
@@ -90,7 +92,7 @@ const AppRoutes = () => {
     )
   }
 
-  // AUTHENTICATED USER ROUTES
+  // Authenticated user routes
   return (
     <>
       {isBioPage ? (
@@ -109,6 +111,7 @@ const AppRoutes = () => {
               <Route path="/biolink/*" element={<Biolink />} />
               <Route path="/monitoring/*" element={<Monitoring />} />
               <Route path="/scheduling/*" element={<SchedulingPage />} />
+              <Route path="/profile" element={<ProfilePage/>}></Route>
               <Route path="/payments" element={<PricingPage />} />
               <Route path="/login" element={<Navigate to={"/"}/>}/>
               <Route path="/verify-email/:token" element={<VerifyEmailPage />} />

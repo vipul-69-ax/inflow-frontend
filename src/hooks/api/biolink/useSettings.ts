@@ -9,6 +9,7 @@ import type { UserSettings, UpdateSettingsRequest } from "@/types/biolink/settin
 /**
  * Hook for interacting with the settings API
  */
+
 export function useSettingsHook() {
   const [settings, setSettings] = useState<UserSettings | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -53,8 +54,7 @@ export function useSettingsHook() {
       if (!isAuthenticated || !userId) {
         throw new Error("User not authenticated")
       }
-
-
+      
       setIsLoading(true)
       setError(null)
 
