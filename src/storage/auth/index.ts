@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { create } from "zustand"
 import { persist, createJSONStorage } from "zustand/middleware"
 
@@ -35,6 +36,7 @@ type AuthStore = AuthState & AuthActions
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
+
       // Initial state
       hasVisitedBefore: false,
       isAuthenticated: false,

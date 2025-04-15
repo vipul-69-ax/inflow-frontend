@@ -180,7 +180,7 @@ export default function InstagramScheduler() {
         payload.scheduled_publish_time = unixTime
       }
 
-      await axios.post("http://api.inflow.chat/api/scheduling/instagram/schedule/post", payload)
+      await axios.post("https://api.inflow.chat/api/scheduling/instagram/schedule/post", payload)
       
       toast.success(`${selectedTab.charAt(0).toUpperCase() + selectedTab.slice(1)} scheduled`, {
         description: `Scheduled for ${format(scheduledDate, "PPP 'at' p")}`,
