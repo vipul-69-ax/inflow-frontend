@@ -13,11 +13,11 @@ const Navbar = () => {
   const {markAsVisited} = useAuthStore()
 
   return (
-    <nav className="flex items-center justify-between px-4 xs:px-6 py-4 max-w-7xl mx-auto bg-white ">
+    <nav className="flex items-center justify-between sticky top-0 bg-white z-50 px-4 xs:px-6 py-4 w-full shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
       {/* Logo */}
-      <div className="flex items-center">
-        <img src={Logo} alt="Inflow Logo" className="h-8 xs:h-10 w-auto" />
-      </div>
+      <Link to={'/'} className="flex items-center cursor-pointer">
+        <img src={Logo} alt="Inflow Logo" className="h-12 ml-14 xs:h-10 w-auto" />
+      </Link >
 
       {/* Hamburger Icon (visible on mobile) */}
       <div className="md:hidden flex items-center">
@@ -53,32 +53,32 @@ const Navbar = () => {
       </div>
 
       {/* Navigation Links (Desktop) */}
-      <div className="hidden md:flex items-center space-x-6">
+      <div className="hidden md:flex items-center space-x-12">
         <Link
           to="/"
-          className="text-gray-800 hover:text-blue-600 transition-colors text-sm md:text-base"
-          style={{ fontFamily: "Avenir LT Std, sans-serif" }}
+          className="text-gray-800 hover:text-gray-500 transition-colors text-sm md:text-base"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
         >
           Home
         </Link>
         <Link
           to="/about"
-          className="text-gray-800 hover:text-blue-600 transition-colors text-sm md:text-base"
-          style={{ fontFamily: "Avenir LT Std, sans-serif" }}
+          className="text-gray-800 hover:text-gray-500 transition-colors text-sm md:text-base"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
         >
           About us
         </Link>
         <Link
           to="/features"
-          className="text-gray-800 hover:text-blue-600 transition-colors text-sm md:text-base"
-          style={{ fontFamily: "Avenir LT Std, sans-serif" }}
+          className="text-gray-800 hover:text-gray-500 transition-colors text-sm md:text-base"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
         >
           Features
         </Link>
         <Link
           to="/pricing"
-          className="text-gray-800 hover:text-blue-600 transition-colors text-sm md:text-base"
-          style={{ fontFamily: "Avenir LT Std, sans-serif" }}
+          className="text-gray-800 hover:text-gray-500 transition-colors text-sm md:text-base"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
         >
           Pricing
         </Link>
@@ -90,7 +90,7 @@ const Navbar = () => {
           onClick={()=>{
             markAsVisited()
           }}
-          className="text-blue-600 hover:text-blue-800 transition-colors text-sm md:text-base"
+          className="text-black-600 hover:bg-blue-50 px-8 py-2 rounded-full cursor-pointer transition-colors text-sm md:text-base"
           style={{ fontFamily: "Avenir LT Std, sans-serif" }}
         >
           Log In
@@ -99,7 +99,7 @@ const Navbar = () => {
           onClick={()=>{
             markAsVisited()
           }}
-          className="bg-blue-600 text-white px-3 py-1.5 xs:px-4 xs:py-2 rounded-full hover:bg-blue-700 transition-colors text-sm md:text-base"
+          className="bg-blue-600 text-white px-4 py-1.5 xs:px-4 xs:py-2 cursor-pointer ml-2 rounded-full hover:bg-blue-800 transition-colors text-sm md:text-base"
           style={{ fontFamily: "Avenir LT Std, sans-serif" }}
         >
           Sign Up

@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
+
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -127,4 +130,30 @@ body, p, span, label, h1, h2, h3, h4, h5, h6, a, li, button, input, textarea {
 
 *{
   font-family: "Avenir LT Std";
+}
+
+
+/* typing animination  */
+#typing-effect {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  font-family: 'Sansita Swashed', cursive; /* Apply the font here */
+  animation: typing 4s steps(30) infinite, blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  50% {
+    border-color: transparent;
+  }
 }

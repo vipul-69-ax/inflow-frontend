@@ -1,12 +1,24 @@
 // components/HeroSection.tsx
 import heroImage from "/animation/Hero.png"; // Importing the second image from assets (mobile and icons)
 import Navbar from "@/components/landing/Navbar";
+import { useEffect } from "react";
+import "../../globals.css";
 
-const HeroSection = ({onPress}:{onPress:()=>void}) => {
+const HeroSection = ({ onPress }: { onPress: () => void }) => {
+
+  // for heading typing
+  useEffect(() => {
+    const typingElement = document.getElementById("typing-effect");
+    typingElement?.addEventListener("animationend", () => {
+      const lineElement = document.getElementById("typing-line");
+      lineElement?.classList.remove("hidden");
+    });
+  }, []);
+
+  
   return (
     <div className="bg-white">
-      <Navbar 
-      />
+      <Navbar />
 
       <section className="relative w-full py-6 px-3 xs:py-8 xs:px-4 sm:py-12 sm:px-6 md:py-16 md:px-8 lg:py-24 bg-white">
         {/* Background Gradient Overlay */}
@@ -22,35 +34,20 @@ const HeroSection = ({onPress}:{onPress:()=>void}) => {
           {/* Left Side: Text and Button */}
           <div className="flex-1 text-center md:text-left mb-6 xs:mb-8 sm:mb-10 md:mb-0">
             {/* Headline */}
-            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-3 xs:mb-4 sm:mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
               <span
+                id="typing-effect"
                 style={{
                   color: "#FF4E88",
-                  fontFamily: "Sansita Swashed",
+                  fontFamily: "'Sansita Swashed', cursive",
                 }}
               >
-                INFLOW
-              </span>{" "}
-              <span
-                style={{
-                  color: "#FF4E88",
-                  fontFamily: "Sansita Swashed",
-                }}
-              >
-                YOUR
-              </span>
-              <br />
-              <span
-                style={{
-                  color: "#FF4E88",
-                  fontFamily: "Sansita Swashed",
-                }}
-              >
-                REACH
+                Inflow Your Reach &nbsp;&nbsp;
               </span>
             </h1>
+
             <p
-              className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-8xl font-bold mb-4 xs:mb-6 sm:mb-8"
+              className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 xs:mb-6 sm:mb-8"
               style={{
                 color: "#083D77",
                 fontFamily: "Avenir LT Std, sans-serif",
@@ -72,7 +69,7 @@ const HeroSection = ({onPress}:{onPress:()=>void}) => {
             {/* Button */}
             <div
               onClick={onPress}
-              className="inline-flex items-center px-4 py-2 xs:px-5 xs:py-2.5 sm:px-6 sm:py-3 rounded-lg text-sm xs:text-base sm:text-lg text-white hover:opacity-90 transition-opacity duration-300"
+              className="inline-flex items-center px-4 py-2 xs:px-5 xs:py-2.5 sm:px-6 sm:py-3 rounded-tl-lg cursor-pointer rounded-bl-lg rounded-br-lg text-sm xs:text-base sm:text-lg text-white hover:opacity-90 transition-opacity duration-300"
               style={{
                 backgroundColor: "#126AD4",
                 fontFamily: "Avenir LT Std, sans-serif",
