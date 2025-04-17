@@ -7,7 +7,7 @@ const SmartSchedulingSection: React.FC<{
   return (
     <section
       className="relative w-full py-6 px-3 xs:py-8 xs:px-4 sm:py-12 sm:px-6 md:py-16 md:px-8 lg:py-24"
-      style={{ backgroundColor: "#DA4167" }}
+      style={{ background : "linear-gradient(135deg, #DA4167 0%, #FF6B81 100%)" }}
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 xs:gap-6">
         {/* Text Content */}
@@ -182,7 +182,7 @@ const SmartSchedulingSection: React.FC<{
 
         {/* Lottie Animation */}
         <div className="w-full md:w-1/3 flex justify-center items-center relative mt-4 xs:mt-6 sm:mt-8 md:mt-0 order-2 md:order-2">
-          <div className="relative w-[80px] h-[104px] xs:w-[100px] xs:h-[130px] sm:w-[150px] sm:h-[195px] md:w-[200px] md:h-[260px] lg:w-[250px] lg:h-[325px]">
+          <div className="relative w-[120px] h-[156px] xs:w-[150px] xs:h-[195px] sm:w-[200px] sm:h-[260px] md:w-[250px] md:h-[325px] lg:w-[300px] lg:h-[390px]">
             {/* Background blur effects */}
             <div
               className="absolute inset-0 w-full h-full rounded-full blur-2xl"

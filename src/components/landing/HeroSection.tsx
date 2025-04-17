@@ -1,11 +1,9 @@
 // components/HeroSection.tsx
-import heroImage from "/animation/Hero.png"; // Importing the second image from assets (mobile and icons)
 import Navbar from "@/components/landing/Navbar";
 import { useEffect } from "react";
 import "../../globals.css";
 
 const HeroSection = ({ onPress }: { onPress: () => void }) => {
-
   // for heading typing
   useEffect(() => {
     const typingElement = document.getElementById("typing-effect");
@@ -15,7 +13,6 @@ const HeroSection = ({ onPress }: { onPress: () => void }) => {
     });
   }, []);
 
-  
   return (
     <div className="bg-white">
       <Navbar />
@@ -91,11 +88,66 @@ const HeroSection = ({ onPress }: { onPress: () => void }) => {
           </div>
 
           {/* Right Side: Mobile and Icons (Using the Second Image) */}
-          <div className="flex-1 flex justify-center md:justify-end">
+          <div className="relative w-150 h-[60vh] ">
+            {/* Main hero graphic - part of normal flow */}
             <img
-              src={heroImage}
-              alt="Mobile Dashboard and Social Icons"
-              className="w-full max-w-[250px] xs:max-w-[300px] sm:max-w-[400px] md:max-w-md lg:max-w-lg"
+              src="/images/home-hero-assets/Hero Graphic.png"
+              alt="Main"
+              className="h-120 absolute left-40"
+            />
+
+            {/* Positioned graphics - absolute to this div */}
+            <img
+              src="/images/home-hero-assets/Graphic 01.png"
+              alt="Graphic 01"
+              className="h-40 absolute top-[10%] left-[30%] hover:scale-110 transition-transform"
+            />
+            <img
+              src="/images/home-hero-assets/Graphic 02.png"
+              alt="Graphic 02"
+              className="h-30 absolute top-[3%] left-[70%] hover:scale-110 transition-transform"
+            />
+            <img
+              src="/images/home-hero-assets/Graphic 05.png"
+              alt="Graphic 05"
+              className="h-40 absolute top-[55%] left-[50%] hover:scale-110 transition-transform"
+            />
+            <img
+              src="/images/home-hero-assets/Graphic 04.png"
+              alt="Graphic 04"
+              className="h-8 absolute top-[87%] left-[35%] hover:scale-110 transition-transform"
+            />
+            <img
+              src="/images/home-hero-assets/Graphic 03.png"
+              alt="Graphic 03"
+              className="h-8 absolute top-[93%] left-[54%] hover:scale-110 transition-transform"
+            />
+
+            {/* Social icons - absolute inside this section */}
+            <img
+              src="/images/home-hero-assets/social 01.png"
+              alt="Social 01"
+              className="h-18 absolute top-[-10%] right-[57%] hover:scale-110 transition-transform"
+            />
+            <img
+              src="/images/home-hero-assets/social 02.png"
+              alt="Social 02"
+              className="h-18 absolute top-[15%] right-[75%] hover:scale-110 transition-transform"
+            />
+            <img
+              src="/images/home-hero-assets/social 03.png"
+              alt="Social 03"
+              className="h-18 absolute top-[45%] right-[85%] hover:scale-110 transition-transform"
+            />
+            <img
+              src="/images/home-hero-assets/social 04.png"
+              alt="Social 04"
+              className="h-18 absolute top-[75%] right-[80%] hover:scale-110 transition-transform"
+            />
+            <img
+              src="/images/home-hero-assets/social 05.png"
+              alt="Social 05"
+              className="h-18 absolute top-[100%] right-[70%] hover:scale-110 transition-transform"
             />
           </div>
         </div>

@@ -44,7 +44,8 @@ const AppRoutes = () => {
     path.startsWith("/test")
   )
   const { hasVisitedBefore, setHasVisitedBefore, isAuthenticated } = useAuthStore()
-  if ( !hasVisitedBefore && !isAuthenticated) {
+  //!hasVisitedBefore && 
+  if ( !isAuthenticated) {
     return (
         <Routes>
           <Route

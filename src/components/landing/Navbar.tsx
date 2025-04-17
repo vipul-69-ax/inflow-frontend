@@ -1,6 +1,6 @@
 import  { useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from "/images/logo/inflow-logo.png"; // Adjust the path as needed
+import Logo from "/images/logo/Original LOGO.png"; // Adjust the path as needed
 import { useAuthStore } from "@/storage/auth";
 
 const Navbar = () => {

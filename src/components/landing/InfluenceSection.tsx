@@ -11,8 +11,8 @@ const InfluenceWithoutLimitsSection: React.FC<{
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 xs:gap-6">
         {/* Lottie Animation */}
-        <div className="w-full md:w-1/3 flex justify-center items-center relative mt-4 xs:mt-6 sm:mt-8 md:mt-0 order-2 md:order-1">
-          <div className="relative w-[80px] h-[104px] xs:w-[100px] xs:h-[130px] sm:w-[150px] sm:h-[195px] md:w-[200px] md:h-[260px] lg:w-[250px] lg:h-[325px]">
+        <div className="w-full mr-30 md:w-1/3 flex justify-center items-center relative mt-4 xs:mt-6 sm:mt-8 md:mt-0 order-2 md:order-1">
+          <div className="relative w-[160px] h-[208px] xs:w-[180px] xs:h-[234px] sm:w-[220px] sm:h-[286px] md:w-[280px] md:h-[364px] lg:w-[340px] lg:h-[442px]">
             {/* Background blur effects */}
             <div
               className="absolute inset-0 w-full h-full rounded-full blur-2xl"

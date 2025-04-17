@@ -11,8 +11,8 @@ const AIEngagementSection: React.FC<{
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 xs:gap-6">
         {/* Lottie Animation */}
-        <div className="w-full md:w-1/3 flex justify-center items-center relative mt-4 xs:mt-6 sm:mt-8 md:mt-0 order-2 md:order-1">
-          <div className="relative w-[80px] h-[104px] xs:w-[100px] xs:h-[130px] sm:w-[150px] sm:h-[195px] md:w-[200px] md:h-[260px] lg:w-[250px] lg:h-[325px]">
+        <div className="w-full md:w-1/3 mr-20 flex justify-center items-center relative mt-4 xs:mt-6 sm:mt-8 md:mt-0 order-2 md:order-1">
+          <div className="relative w-[150px] h-[195px] xs:w-[180px] xs:h-[230px] sm:w-[250px] sm:h-[325px] md:w-[300px] md:h-[390px] lg:w-[350px] lg:h-[455px]">
             {/* Background blur effects */}
             <div
               className="absolute inset-0 w-full h-full rounded-full blur-2xl"

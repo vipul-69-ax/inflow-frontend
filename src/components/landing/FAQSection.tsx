@@ -1,5 +1,6 @@
 // components/FAQComponent.tsx
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const faqData = [
   {
@@ -65,26 +66,24 @@ const FAQComponent: React.FC = () => {
     <section
       className="relative w-full py-6 px-3 xs:py-8 xs:px-4 sm:py-12 sm:px-6 md:py-16 md:px-8 lg:py-24"
       style={{
-        background: "#000000", // Solid black background
+        background: "#000000",
       }}
     >
-      {/* Blue Rounded Corner Overlay (Top-Right) */}
+      {/* Blue glows */}
       <div
-        className="absolute top-0 right-0 w-[150px] h-[150px] xs:w-[200px] xs:h-[200px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px] rounded-full opacity-20"
+        className="absolute top-0 right-0 rounded-full opacity-20 w-[150px] h-[150px] xs:w-[200px] xs:h-[200px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px]"
         style={{
           background: "radial-gradient(circle, #3B82F6 0%, transparent 100%)",
         }}
-      ></div>
-      {/* Blue Rounded Corner Overlay (Bottom-Left) */}
+      />
       <div
-        className="absolute bottom-0 left-0 w-[150px] h-[150px] xs:w-[200px] xs:h-[200px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px] rounded-full opacity-20"
+        className="absolute bottom-0 left-0 rounded-full opacity-20 w-[150px] h-[150px] xs:w-[200px] xs:h-[200px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px]"
         style={{
           background: "radial-gradient(circle, #3B82F6 0%, transparent 100%)",
         }}
-      ></div>
+      />
 
       <div className="max-w-4xl mx-auto relative z-10">
-        {/* Heading */}
         <h2
           className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-medium mb-6 xs:mb-8 sm:mb-12 text-center"
           style={{ color: "#FFFFFF", fontFamily: "Avenir LT Std, sans-serif" }}
@@ -92,21 +91,20 @@ const FAQComponent: React.FC = () => {
           Frequently asked questions
         </h2>
 
-        {/* FAQ Items */}
-        <div className="space-y-2 xs:space-y-3 sm:space-y-4">
+        <div className="space-y-2 xs:space-y-3 sm:space-y-4 ">
           {faqData.map((faq, index) => (
             <div
               key={index}
-              className="bg-[#F5F7FA] bg-opacity-10 rounded-lg overflow-hidden"
+              className="bg-[#F5F7FA]  bg-opacity-10 rounded-lg overflow-hidden"
             >
               <button
-                className="w-full flex justify-between items-center p-3 xs:p-4 sm:p-6 text-left"
+                className="w-full cursor-pointer flex justify-between items-center p-3 xs:p-4 sm:p-6 text-left"
                 onClick={() => toggleFAQ(index)}
               >
                 <span
                   className="text-sm xs:text-base sm:text-lg md:text-xl"
                   style={{
-                    color: "#000000", // Black text for questions
+                    color: "#000000",
                     fontFamily: "Avenir LT Std, sans-serif",
                   }}
                 >
@@ -117,7 +115,7 @@ const FAQComponent: React.FC = () => {
                     openIndex === index ? "rotate-90" : "rotate-0"
                   }`}
                   fill="none"
-                  stroke="#000000" // Black stroke for chevron
+                  stroke="#000000"
                   viewBox="0 0 24 24"
                   strokeWidth="2"
                 >
@@ -128,19 +126,27 @@ const FAQComponent: React.FC = () => {
                   />
                 </svg>
               </button>
-              {openIndex === index && (
-                <div
-                  className="p-3 xs:p-4 sm:p-6 bg-[#F5F7FA] bg-opacity-5"
-                  style={{
-                    color: "#000000", // Black text for answers
-                    fontFamily: "Avenir LT Std, sans-serif",
-                  }}
-                >
-                  <p className="text-xs xs:text-sm sm:text-base">
-                    {faq.answer}
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {openIndex === index && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="px-3 xs:px-4 sm:px-6 pb-4"
+                  >
+                    <p
+                      className="text-xs xs:text-sm sm:text-base"
+                      style={{
+                        color: "#000000",
+                        fontFamily: "Avenir LT Std, sans-serif",
+                      }}
+                    >
+                      {faq.answer}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ))}
         </div>
